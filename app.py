@@ -166,27 +166,57 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
 
 
         
-reportingdict = OrderedDict()   # Holds reporting unit name. Or should this be holding the reporting ID?
-                                # ID 
+reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
 racenamegroups = OrderedDict()
+
+
+
 for row in masterlist:
     # Begin basic setup
-    if row['CountyName'] not in reportingdict:
-        reportingdict[row['CountyName']] = []
-    if row['FullRace'] not in reportingdict[row['CountyName']]:
-        reportingdict[row['CountyName']].append(row['FullRace'])
-    if row['FullRace'] not in racedict:
-        racedict[row['FullRace']] = OrderedDict()
-        for item in ["Votes", "Precincts", "PrecinctsR"]:
-            racedict[row['FullRace']][item] = 0
-        racedict[row['FullRace']]['Counties'] = OrderedDict()
-        racedict[row['FullRace']]['Candidates'] = OrderedDict()
-    if row['FullName'] not in racedict[row['FullRace']]['Candidates']:
-        racedict[row['FullRace']]['Candidates'][row['FullName']] = {}
-        racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] = 0
-        for item in ["CanNameLast", "CanNameMiddle", "CanNameFirst", "PartyName", "ShortParty"]:
-            racedict[row['FullRace']]['Candidates'][row['FullName']][item] = row[item]
+# OK, before reportingdict held countynames. The values were the names of races, which we wanted to be unique.
+# Now we want reportingdict to hold reportingunitid (county IDs, not names).
+# And instead of names of races we want the raceid, which must be unique.
+
+    if row['reportingunitid'] not in reportingdict:
+        reportingdict[row['reportingunitid']] = []
+    if row['officename'] not in reportingdict[row['reportingunitid']]:
+        reportingdict[row['reportingunitid']].append(row['raceid'])
+    # if row['CountyName'] not in reportingdict:
+        # reportingdict[row['CountyName']] = []
+    # if row['FullRace'] not in reportingdict[row['CountyName']]:
+        # reportingdict[row['CountyName']].append(row['FullRace'])
+    
+# OK, so we were going by racedict holding unique race names. We can't do that any more.
+# So let's have racedict hold raceids , and the racename / officename will be a value.
+    if row['raceid'] not in racedict:
+        racedict[row['raceid']] = OrderedDict()
+        for item in ["votecount", "precinctstotal", "precinctsreporting"]:
+            racedict[row['raceid']][item] = 0
+            racedict[row['raceid']]['officename'] = row['officename']
+    # if row['FullRace'] not in racedict:
+        # racedict[row['FullRace']] = OrderedDict()
+        # for item in ["Votes", "Precincts", "PrecinctsR"]:
+            # racedict[row['FullRace']][item] = 0
+# Now, we want everything keyed to the reportingunitid instead of the county name, right?
+        racedict[row['raceid']]['reportingunitid'] = OrderedDict()
+        racedict[row['raceid']]['polid'] = OrderedDict()
+        # racedict[row['FullRace']]['Counties'] = OrderedDict()
+        # racedict[row['FullRace']]['Candidates'] = OrderedDict()
+    if row['polid'] not in racedict[row['raceid']]['polid']:
+        racedict[row['raceid']]['polid'][row['polid']] = {}
+        racedict[row['raceid']]['polid'][row['polid']]['votecount'] = 0
+        for item in ['first', 'last', 'party']:
+            racedict[row['raceid']]['polid'][row['polid']][item] = row[item]
+    # if row['FullName'] not in racedict[row['FullRace']]['Candidates']:
+        # racedict[row['FullRace']]['Candidates'][row['FullName']] = {}
+        # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] = 0
+        # for item in ["CanNameLast", "CanNameMiddle", "CanNameFirst", "PartyName", "ShortParty"]:
+            # racedict[row['FullRace']]['Candidates'][row['FullName']][item] = row[item]
+
+            
+
+
     if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
         racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
         racedict[row['FullRace']]['Counties'][row['CountyName']]['Candidates'] = OrderedDict()
