@@ -158,7 +158,7 @@ composite_csvs()
     
 with open(resultscomposite, "r") as f:    # Import the data and do some basic cleaning
     masterlist = []
-    for row in csv.DictReader(f, delimiter="\t"):
+    for row in csv.DictReader(f):
         masterlist.append(cleanrow(row))
 
 
