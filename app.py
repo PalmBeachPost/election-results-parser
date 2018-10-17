@@ -151,6 +151,16 @@ def slugifier(text):
 
 
 def cleanrow(row):
+    for item in ["electtotal", "precinctsreporting", "precinctstotal", "votecount"]:
+        if row[item] == '':
+            print(item)
+            print(row)
+        row[item] = int(row[item])
+    # precinctsreportingpct	
+    # votepct
+
+    
+    
     return(row)
 
 
@@ -241,9 +251,9 @@ for row in masterlist:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreporting'] = row['precinctsreporting']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctstotal'] = row['precinctstotal']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreportingpct'] = row['precinctsreportingpct']
-        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['totalvotes'] = row['totalvotes']
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
         racedict[row['raceid']]['precinctstotal'] += row['precinctstotal']
-        racedict[row['raceod']]['precinctsreporting'] += row['precinctsreporting']
+        racedict[row['raceid']]['precinctsreporting'] += row['precinctsreporting']
         
     # if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
         # racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
@@ -269,14 +279,14 @@ for row in masterlist:
 
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
     racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['voutecount']
-    racedict[row['raceid']]['reportingunitid'][row['reportingunitid'][row['polid'] = row['votecount']
+    racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
     
 
     # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] += row['CanVotes']
     # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] += row['CanVotes']
     # racedict[row['FullRace']]['Counties'][row['CountyName']][row['FullName']] = row['CanVotes']
-    racedict[row['FullRace']]['Votes'] += row['CanVotes']
+    # racedict[row['FullRace']]['Votes'] += row['CanVotes']
 
 
 paperdict = {}
