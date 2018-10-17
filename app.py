@@ -86,7 +86,7 @@ def composite_csvs():
                    "seatnum", "statename", "statepostal", "test", "uncontested", "votecount", "votepct", "winner"
                    ]
     
-    sourcecsvs = list(glob.glob(datadir + "*"))
+    sourcecsvs = sorted(list(glob.glob(datadir + "*")))
     masterlist = []
     for filename in sourcecsvs:
         with open(filename, "r") as csvfile:
