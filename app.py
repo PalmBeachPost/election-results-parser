@@ -200,9 +200,7 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
         
 reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
-officenamegroups = OrderedDict()
-
-
+# officenamegroups = OrderedDict()
 
 for row in masterlist:
     # Begin basic setup
@@ -210,9 +208,11 @@ for row in masterlist:
 # Now we want reportingdict to hold reportingunitid (county IDs, not names).
 # And instead of names of races we want the raceid, which must be unique.
 
+    if 
+
     if row['reportingunitid'] not in reportingdict:
         reportingdict[row['reportingunitid']] = []
-    if row['officename'] not in reportingdict[row['reportingunitid']]:
+    if row['raceid'] not in reportingdict[row['reportingunitid']]:
         reportingdict[row['reportingunitid']].append(row['raceid'])
     # if row['CountyName'] not in reportingdict:
         # reportingdict[row['CountyName']] = []
@@ -264,14 +264,14 @@ for row in masterlist:
         # racedict[row['FullRace']]['Precincts'] += row['Precincts']
         # racedict[row['FullRace']]['PrecinctsR'] += row['PrecinctsReporting']
 
-    if row['officename'] not in officenamegroups:
-        racenamegroups[row['officename']] == []
+# #    if row['officename'] not in officenamegroups:
+# #        racenamegroups[row['officename']] == []
         
     # if row['RaceNameGroup'] not in racenamegroups:
         # racenamegroups[row['RaceNameGroup']] = []
     # if row['RaceName'] not in racenamegroups[row['RaceNameGroup']]:
-    if row['raceid'] not in officenamegroups[row['officename']]:
-        officenamegroups[row['officename']].append(row['raceid'])
+# #    if row['raceid'] not in officenamegroups[row['officename']]:
+# #        officenamegroups[row['officename']].append(row['raceid'])
 
 #    if row['FullRace'] not in racenamegroups[row['RaceNameGroup']]:
 #        # racenamegroups[row['RaceNameGroup']].append(row['RaceName'])
@@ -293,24 +293,33 @@ paperdict = {}
 papergroupdict = OrderedDict()
 for paper in papers:
     paperdict[paper] = []
-    for county in reportingdict:
-        if county in papers[paper]:
-            for fullrace in reportingdict[county]:
-                if fullrace not in paperdict[paper]:
-                    paperdict[paper].append(fullrace)
+    for reportingunitid in reportingdict:
+        if reportingunitid in papers[paper]:
+            for raceid in reportingdict[reportingunitid]:
+                if raceid not in paperdict[paper]:
+                    paperdict[paper].append(raceid)
 # Now we should have all the races, but the order is scrambled because there are multiple counties involved.
-for paper in paperdict:   # HEY!
+
+for paper in paperdict:
     fml = []
-    papergroupdict[paper] = OrderedDict()
-    for racenamegroup in racenamegroups:
-        for racename in racenamegroups[racenamegroup]: # Not a dictionary.
-            if racename in paperdict[paper]:
-                if racenamegroup not in papergroupdict[paper]:
-                    papergroupdict[paper][racenamegroup] = []
-                if racename not in fml:
-                    papergroupdict[paper][racenamegroup].append(racename)
-                    fml.append(racename)
+    for raceid in racedict:
+        if raceid in paperdict[paper]:
+            if raceid not in fml:
+                fml.append(raceid)
     paperdict[paper] = fml
+
+# for paper in paperdict:   # HEY!
+    # fml = []
+    # papergroupdict[paper] = OrderedDict()
+    # for racenamegroup in racenamegroups:
+        # for racename in racenamegroups[racenamegroup]: # Not a dictionary.
+            # if racename in paperdict[paper]:
+                # if racenamegroup not in papergroupdict[paper]:
+                    # papergroupdict[paper][racenamegroup] = []
+                # if racename not in fml:
+                    # papergroupdict[paper][racenamegroup].append(racename)
+                    # fml.append(racename)
+    # paperdict[paper] = fml
 
 
 @app.route('/<paper>/main.html')
