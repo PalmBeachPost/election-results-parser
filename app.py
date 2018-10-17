@@ -190,7 +190,7 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
         
 reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
-racenamegroups = OrderedDict()
+officenamegroups = OrderedDict()
 
 
 
@@ -242,29 +242,40 @@ for row in masterlist:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctstotal'] = row['precinctstotal']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreportingpct'] = row['precinctsreportingpct']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['totalvotes'] = row['totalvotes']
+        racedict[row['raceid']]['precinctstotal'] += row['precinctstotal']
+        racedict[row['raceod']]['precinctsreporting'] += row['precinctsreporting']
         
+    # if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
+        # racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
+        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Candidates'] = OrderedDict()
+        # racedict[row['FullRace']]['Counties'][row['CountyName']]['PrecinctsR'] = row['PrecinctsReporting']
+        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Precincts'] = row['Precincts']
+        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] = 0
+        # racedict[row['FullRace']]['Precincts'] += row['Precincts']
+        # racedict[row['FullRace']]['PrecinctsR'] += row['PrecinctsReporting']
 
-       
-            
-
-
-    if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
-        racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
-        racedict[row['FullRace']]['Counties'][row['CountyName']]['Candidates'] = OrderedDict()
-        racedict[row['FullRace']]['Counties'][row['CountyName']]['PrecinctsR'] = row['PrecinctsReporting']
-        racedict[row['FullRace']]['Counties'][row['CountyName']]['Precincts'] = row['Precincts']
-        racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] = 0
-        racedict[row['FullRace']]['Precincts'] += row['Precincts']
-        racedict[row['FullRace']]['PrecinctsR'] += row['PrecinctsReporting']
-    if row['RaceNameGroup'] not in racenamegroups:
-        racenamegroups[row['RaceNameGroup']] = []
+    if row['officename'] not in officenamegroups:
+        racenamegroups[row['officename']] == []
+        
+    # if row['RaceNameGroup'] not in racenamegroups:
+        # racenamegroups[row['RaceNameGroup']] = []
     # if row['RaceName'] not in racenamegroups[row['RaceNameGroup']]:
-    if row['FullRace'] not in racenamegroups[row['RaceNameGroup']]:
-        # racenamegroups[row['RaceNameGroup']].append(row['RaceName'])
-        racenamegroups[row['RaceNameGroup']].append(row['FullRace'])
-    racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] += row['CanVotes']
-    racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] += row['CanVotes']
-    racedict[row['FullRace']]['Counties'][row['CountyName']][row['FullName']] = row['CanVotes']
+    if row['raceid'] not in officenamegroups[row['officename']]:
+        officenamegroups[row['officename']].append(row['raceid'])
+
+#    if row['FullRace'] not in racenamegroups[row['RaceNameGroup']]:
+#        # racenamegroups[row['RaceNameGroup']].append(row['RaceName'])
+#        racenamegroups[row['RaceNameGroup']].append(row['FullRace'])
+
+    racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
+    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['voutecount']
+    racedict[row['raceid']]['reportingunitid'][row['reportingunitid'][row['polid'] = row['votecount']
+    racedict[row['raceid']]['electtotal'] += row['votecount']
+    
+
+    # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] += row['CanVotes']
+    # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] += row['CanVotes']
+    # racedict[row['FullRace']]['Counties'][row['CountyName']][row['FullName']] = row['CanVotes']
     racedict[row['FullRace']]['Votes'] += row['CanVotes']
 
 
