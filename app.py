@@ -235,7 +235,16 @@ for row in masterlist:
         # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] = 0
         # for item in ["CanNameLast", "CanNameMiddle", "CanNameFirst", "PartyName", "ShortParty"]:
             # racedict[row['FullRace']]['Candidates'][row['FullName']][item] = row[item]
+    if row['reportingunitid'] not in racedict[row['raceid']]['reportingunitid']:
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']] = OrderedDict()
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['polid'] = OrderedDict()
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreporting'] = row['precinctsreporting']
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctstotal'] = row['precinctstotal']
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreportingpct'] = row['precinctsreportingpct']
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['totalvotes'] = row['totalvotes']
+        
 
+       
             
 
 
