@@ -202,6 +202,8 @@ for row in masterlist:
     # Now we want reportingdict to hold reportingunitid (county IDs, not names).
     # And instead of names of races we want the raceid, which must be unique.
 
+    if 
+
     if row['reportingunitid'] not in reportingdict:
         reportingdict[row['reportingunitid']] = []
     if row['raceid'] not in reportingdict[row['reportingunitid']]:
@@ -215,10 +217,9 @@ for row in masterlist:
 # So let's have racedict hold raceids , and the racename / officename will be a value.
     if row['raceid'] not in racedict:
         racedict[row['raceid']] = OrderedDict()
-        for item in ["votecount", "precinctstotal", "precinctsreporting", "electtotal", "precinctsreportingpct"]:
+        for item in ["votecount", "precinctstotal", "precinctsreporting"]:
             racedict[row['raceid']][item] = 0
-        racedict[row['raceid']]['officename'] = row['officename']
-
+            racedict[row['raceid']]['officename'] = row['officename']
     # if row['FullRace'] not in racedict:
         # racedict[row['FullRace']] = OrderedDict()
         # for item in ["Votes", "Precincts", "PrecinctsR"]:
@@ -271,7 +272,7 @@ for row in masterlist:
 #        racenamegroups[row['RaceNameGroup']].append(row['FullRace'])
 
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
-    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['votecount']
+    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['voutecount']
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
 
