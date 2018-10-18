@@ -1,45 +1,6 @@
-# coding: utf-8
-# Built for Python 3
 """
 To-do list:
-Move to external config file with list of papers, folder names
-Do we sort by vote?
-Implement county details
-Move to dynamic data tables thingy?
-Templatize route building
-Build route for group pages
-Build generator for group, main pages
-Build out Frozen Flask
-Add in Pym or Seattle iframe solution -> Can we test with GateHouse?
-Build route for paper pages
-Build template for paper pages
-
-
-
-Allow resorting of group names, e.g., Governor, then U.S. Senate, then U.S. House?
-Simplify party names when there are more (Green, Reform)
-Build a system to identify winners
-Figure out how to handle the "keep to retain" races
-Cure cancer
-Foment world peace
-
-Done:
-Build styles
-Tag TD, TH elements
-
-Votes not getting set under racedict[race]
-Actually parse stuff
-Clean up judicial shit
-Build rounder tool; watch for zeroes
-Build comma tool
-Count votes at county-candidate and candidate levels
-
-Not doing:
-Calculate PrecinctRPct
-Calculate candidate vote share
-Build PrecinctsRPct into racedict-race-Counties-name, racedict-race-Candidates
-Build Votes, VoteP into racedict-race-Candidates-name and racedict-race-Counties-name
-
+-- Implement to-do list
 """
 from flask import Flask, render_template, redirect, url_for, request   # External dependency
 from flask_frozen import Freezer
@@ -202,8 +163,6 @@ for row in masterlist:
     # Now we want reportingdict to hold reportingunitid (county IDs, not names).
     # And instead of names of races we want the raceid, which must be unique.
 
-    if 
-
     if row['reportingunitid'] not in reportingdict:
         reportingdict[row['reportingunitid']] = []
     if row['raceid'] not in reportingdict[row['reportingunitid']]:
@@ -217,9 +176,10 @@ for row in masterlist:
 # So let's have racedict hold raceids , and the racename / officename will be a value.
     if row['raceid'] not in racedict:
         racedict[row['raceid']] = OrderedDict()
-        for item in ["votecount", "precinctstotal", "precinctsreporting"]:
+        for item in ["votecount", "precinctstotal", "precinctsreporting", "electtotal", "precinctsreportingpct"]:
             racedict[row['raceid']][item] = 0
-            racedict[row['raceid']]['officename'] = row['officename']
+        racedict[row['raceid']]['officename'] = row['officename']
+
     # if row['FullRace'] not in racedict:
         # racedict[row['FullRace']] = OrderedDict()
         # for item in ["Votes", "Precincts", "PrecinctsR"]:
@@ -272,7 +232,7 @@ for row in masterlist:
 #        racenamegroups[row['RaceNameGroup']].append(row['FullRace'])
 
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
-    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['voutecount']
+    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['votecount']
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
 
