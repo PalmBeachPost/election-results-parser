@@ -43,7 +43,7 @@ Build Votes, VoteP into racedict-race-Candidates-name and racedict-race-Counties
 """
 from flask import Flask, render_template, redirect, url_for, request   # External dependency
 from flask_frozen import Freezer
-from slugify import slugify         # awesome-slugify, from requirements
+from slugify import slugify # awesome-slugify, from requirements
 
 import configuration    # configuration.py, with user-defined variables.
 
@@ -59,12 +59,13 @@ from subprocess import Popen
 import pickle
 
 
+
 # primary = True
 # datadir = "snapshots/"
 # homedir = r'/root/data/florida-election-results'
 # resultscomposite = "./resultscomposite.csv"   # Path to Final compiled CSV in Elex format, with data from all sources
 
-# racedelim = " -- "    # E.g., "U.S. Senator -- Rep."
+#racedelim = " -- "    # E.g., "U.S. Senator -- Rep."
 
 datadir = configuration.datadir
 resultscomposite = configuration.resultscomposite
@@ -73,7 +74,6 @@ papers = configuration.papers
 app = Flask(__name__)
 freezer = Freezer(app)
 pp = pprint.PrettyPrinter(indent=4)
-
 
 def composite_csvs():
     global resultscomposite
@@ -85,7 +85,7 @@ def composite_csvs():
                    "precinctstotal", "reportingunitid", "reportingunitname", "runoff", "seatname",
                    "seatnum", "statename", "statepostal", "test", "uncontested", "votecount", "votepct", "winner"
                    ]
-
+    
     sourcecsvs = sorted(list(glob.glob(datadir + "*")))
     masterlist = []
     for filename in sourcecsvs:
@@ -118,7 +118,7 @@ def get_timestamp():
     hour = int(rawtimestamp[0:2])
     pm = False
     if hour > 12:
-        hour = hour - 12
+        hour = hour -12
         pm = True
     if hour == 0:
         hour = 12
@@ -156,13 +156,16 @@ def cleanrow(row):
             print(item)
             print(row)
         row[item] = int(row[item])
-    # precinctsreportingpct
+    # precinctsreportingpct	
     # votepct
+
+    
+    
     return(row)
 
 
 composite_csvs()
-
+    
 with open(resultscomposite, "r") as f:    # Import the data and do some basic cleaning
     masterlist = []
     for row in csv.DictReader(f):
@@ -179,8 +182,9 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
             # line.append(str(row[item]))
         # writer.writerow(line)
 
+
 # Translations:
-# countydict -> reportingdict   with reportingunitname
+# countydict -> reportingdict   with reportingunitname        
 # racetracker ... was never used?
 # racedict was built around the distinct racename, but that's perilous. Let's see:
 #   -- Racedict should be done by raceid.
@@ -192,15 +196,17 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
 #     because if we're grouping by raceid, then we don't care what the name is. Let's be agnostic.
 
 
+
+        
 reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
 # officenamegroups = OrderedDict()
 
 for row in masterlist:
     # Begin basic setup
-    # OK, before reportingdict held countynames. The values were the names of races, which we wanted to be unique.
-    # Now we want reportingdict to hold reportingunitid (county IDs, not names).
-    # And instead of names of races we want the raceid, which must be unique.
+# OK, before reportingdict held countynames. The values were the names of races, which we wanted to be unique.
+# Now we want reportingdict to hold reportingunitid (county IDs, not names).
+# And instead of names of races we want the raceid, which must be unique.
 
     if row['reportingunitid'] not in reportingdict:
         reportingdict[row['reportingunitid']] = []
@@ -210,7 +216,7 @@ for row in masterlist:
         # reportingdict[row['CountyName']] = []
     # if row['FullRace'] not in reportingdict[row['CountyName']]:
         # reportingdict[row['CountyName']].append(row['FullRace'])
-
+    
 # OK, so we were going by racedict holding unique race names. We can't do that any more.
 # So let's have racedict hold raceids , and the racename / officename will be a value.
     if row['raceid'] not in racedict:
@@ -247,7 +253,7 @@ for row in masterlist:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
         racedict[row['raceid']]['precinctstotal'] += row['precinctstotal']
         racedict[row['raceid']]['precinctsreporting'] += row['precinctsreporting']
-
+        
     # if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
         # racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
         # racedict[row['FullRace']]['Counties'][row['CountyName']]['Candidates'] = OrderedDict()
@@ -259,7 +265,7 @@ for row in masterlist:
 
 # #    if row['officename'] not in officenamegroups:
 # #        racenamegroups[row['officename']] == []
-
+        
     # if row['RaceNameGroup'] not in racenamegroups:
         # racenamegroups[row['RaceNameGroup']] = []
     # if row['RaceName'] not in racenamegroups[row['RaceNameGroup']]:
@@ -274,6 +280,7 @@ for row in masterlist:
     racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['votecount']
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
+    
 
     # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] += row['CanVotes']
     # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] += row['CanVotes']
@@ -333,12 +340,12 @@ def maintemplate(paper):
                            reportingdict=reportingdict,
                            timestamp=get_timestamp())
 
-
 @freezer.register_generator
 def getpapernames():
     global paperdict
     for paper in paperdict:
         yield "/" + paper + "/main.html"
+
 
 # In[18]:
 
