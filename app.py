@@ -131,7 +131,6 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
 
 reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
-# officenamegroups = OrderedDict()
 
 for row in masterlist:
     # Begin basic setup
@@ -143,10 +142,6 @@ for row in masterlist:
         reportingdict[row['reportingunitid']] = []
     if row['raceid'] not in reportingdict[row['reportingunitid']]:
         reportingdict[row['reportingunitid']].append(row['raceid'])
-    # if row['CountyName'] not in reportingdict:
-        # reportingdict[row['CountyName']] = []
-    # if row['FullRace'] not in reportingdict[row['CountyName']]:
-        # reportingdict[row['CountyName']].append(row['FullRace'])
 
 # OK, so we were going by racedict holding unique race names. We can't do that any more.
 # So let's have racedict hold raceids , and the racename / officename will be a value.
@@ -157,25 +152,14 @@ for row in masterlist:
         for item in ['officeid', 'officename', 'racetypeid', 'seatname', 'seatnum']:
             racedict[row['raceid']][item] = row[item]        
 
-    # if row['FullRace'] not in racedict:
-        # racedict[row['FullRace']] = OrderedDict()
-        # for item in ["Votes", "Precincts", "PrecinctsR"]:
-            # racedict[row['FullRace']][item] = 0
 # Now, we want everything keyed to the reportingunitid instead of the county name, right?
         racedict[row['raceid']]['reportingunitid'] = OrderedDict()
         racedict[row['raceid']]['polid'] = OrderedDict()
-        # racedict[row['FullRace']]['Counties'] = OrderedDict()
-        # racedict[row['FullRace']]['Candidates'] = OrderedDict()
     if row['polid'] not in racedict[row['raceid']]['polid']:
         racedict[row['raceid']]['polid'][row['polid']] = {}
         racedict[row['raceid']]['polid'][row['polid']]['votecount'] = 0
         for item in ['first', 'incumbent', 'last', 'party', 'runoff', 'uncontested', 'winner']:
             racedict[row['raceid']]['polid'][row['polid']][item] = row[item]
-    # if row['FullName'] not in racedict[row['FullRace']]['Candidates']:
-        # racedict[row['FullRace']]['Candidates'][row['FullName']] = {}
-        # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] = 0
-        # for item in ["CanNameLast", "CanNameMiddle", "CanNameFirst", "PartyName", "ShortParty"]:
-            # racedict[row['FullRace']]['Candidates'][row['FullName']][item] = row[item]
     if row['reportingunitid'] not in racedict[row['raceid']]['reportingunitid']:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']] = OrderedDict()
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['polid'] = OrderedDict()
@@ -186,39 +170,10 @@ for row in masterlist:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
         racedict[row['raceid']]['precinctstotal'] += row['precinctstotal']
         racedict[row['raceid']]['precinctsreporting'] += row['precinctsreporting']
-
-    # if row['CountyName'] not in racedict[row['FullRace']]['Counties']:
-        # racedict[row['FullRace']]['Counties'][row['CountyName']] = OrderedDict()
-        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Candidates'] = OrderedDict()
-        # racedict[row['FullRace']]['Counties'][row['CountyName']]['PrecinctsR'] = row['PrecinctsReporting']
-        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Precincts'] = row['Precincts']
-        # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] = 0
-        # racedict[row['FullRace']]['Precincts'] += row['Precincts']
-        # racedict[row['FullRace']]['PrecinctsR'] += row['PrecinctsReporting']
-
-# #    if row['officename'] not in officenamegroups:
-# #        racenamegroups[row['officename']] == []
-
-    # if row['RaceNameGroup'] not in racenamegroups:
-        # racenamegroups[row['RaceNameGroup']] = []
-    # if row['RaceName'] not in racenamegroups[row['RaceNameGroup']]:
-# #    if row['raceid'] not in officenamegroups[row['officename']]:
-# #        officenamegroups[row['officename']].append(row['raceid'])
-
-#    if row['FullRace'] not in racenamegroups[row['RaceNameGroup']]:
-#        # racenamegroups[row['RaceNameGroup']].append(row['RaceName'])
-#        racenamegroups[row['RaceNameGroup']].append(row['FullRace'])
-
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
     racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['votecount']
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
-
-    # racedict[row['FullRace']]['Counties'][row['CountyName']]['Votes'] += row['CanVotes']
-    # racedict[row['FullRace']]['Candidates'][row['FullName']]['Votes'] += row['CanVotes']
-    # racedict[row['FullRace']]['Counties'][row['CountyName']][row['FullName']] = row['CanVotes']
-    # racedict[row['FullRace']]['Votes'] += row['CanVotes']
-
 
 paperdict = {}
 papergroupdict = OrderedDict()
@@ -229,8 +184,8 @@ for paper in papers:
             for raceid in reportingdict[reportingunitid]:
                 if raceid not in paperdict[paper]:
                     paperdict[paper].append(raceid)
-# Now we should have all the races, but the order is scrambled because there are multiple counties involved.
 
+# Now we should have all the races, but the order is scrambled because there are multiple counties involved.
 for paper in paperdict:
     fml = []
     for raceid in racedict:
@@ -246,19 +201,6 @@ with open("masterlist.pickle", "wb") as f:
     pickle.dump(masterlist, f)
 with open("racedict.pickle", "wb") as f:
     pickle.dump(racedict, f)
-    
-# for paper in paperdict:   # HEY!
-    # fml = []
-    # papergroupdict[paper] = OrderedDict()
-    # for racenamegroup in racenamegroups:
-        # for racename in racenamegroups[racenamegroup]: # Not a dictionary.
-            # if racename in paperdict[paper]:
-                # if racenamegroup not in papergroupdict[paper]:
-                    # papergroupdict[paper][racenamegroup] = []
-                # if racename not in fml:
-                    # papergroupdict[paper][racenamegroup].append(racename)
-                    # fml.append(racename)
-    # paperdict[paper] = fml
 
 
 @app.route('/<paper>/main.html')
