@@ -9,7 +9,6 @@ from slugify import slugify         # awesome-slugify, from requirements
 import configuration    # configuration.py, with user-defined variables.
 
 import csv
-import glob
 import time
 import datetime
 from collections import OrderedDict
@@ -34,35 +33,6 @@ papers = configuration.papers
 app = Flask(__name__)
 freezer = Freezer(app)
 pp = pprint.PrettyPrinter(indent=4)
-
-
-def composite_csvs():
-    global resultscomposite
-    global datadir
-    lineheaders = ["id", "raceid", "racetype", "racetypeid", "ballotorder", "candidateid", "description",
-                   "delegatecount", "electiondate", "electtotal", "electwon", "fipscode", "first", "incumbent",
-                   "initialization_data", "is_ballot_measure", "last", "lastupdated", "level", "national",
-                   "officeid", "officename", "party", "polid", "polnum", "precinctsreporting", "precinctsreportingpct",
-                   "precinctstotal", "reportingunitid", "reportingunitname", "runoff", "seatname",
-                   "seatnum", "statename", "statepostal", "test", "uncontested", "votecount", "votepct", "winner"
-                   ]
-
-    sourcecsvs = sorted(list(glob.glob(datadir + "*")))
-    masterlist = []
-    for filename in sourcecsvs:
-        with open(filename, "r") as csvfile:
-            reader = list(csv.DictReader(csvfile))
-        if list(reader[0].keys()) != lineheaders:
-            print("CSV input file " + filename + " has different headers than we're looking for. Not importing.")
-        else:
-            print("CSV input file " + filename + " seems to fit Elex standard. Importing.")
-            for row in reader:
-                masterlist.append(row)
-    with open(resultscomposite, "w", newline="") as compositefile:
-        writer = csv.writer(compositefile)
-        writer.writerow(lineheaders)
-        for row in masterlist:
-            writer.writerow(list(row.values()))
 
 
 # folders = sorted(list(glob.glob(datadir + "*")), reverse=True)  # Find the latest time-stamped folder
@@ -121,8 +91,6 @@ def cleanrow(row):
     # votepct
     return(row)
 
-
-composite_csvs()
 
 with open(resultscomposite, "r") as f:    # Import the data and do some basic cleaning
     masterlist = []
