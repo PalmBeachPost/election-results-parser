@@ -129,30 +129,6 @@ with open(resultscomposite, "r") as f:    # Import the data and do some basic cl
     for row in csv.DictReader(f):
         masterlist.append(cleanrow(row))
 
-
-# with open("recastreport.csv", "w", newline="") as f:
-    # headers = row.keys()
-    # writer = csv.writer(f)
-    # writer.writerow(headers)
-    # for row in masterlist:
-        # line = []
-        # for item in headers:
-            # line.append(str(row[item]))
-        # writer.writerow(line)
-
-# Translations:
-# countydict -> reportingdict   with reportingunitname
-# racetracker ... was never used?
-# racedict was built around the distinct racename, but that's perilous. Let's see:
-#   -- Racedict should be done by raceid.
-#   -- Racedict then needs a key for the race name; ordinarily officename, but may include
-#       -- Party
-#       -- Seatname
-#       -- Seatnumber
-#     ... so should that be parsed here or at the intermediate level? Seems like intermediate level.
-#     because if we're grouping by raceid, then we don't care what the name is. Let's be agnostic.
-
-
 reportingdict = OrderedDict()   # Holds reporting unit ID?
 racedict = OrderedDict()
 # officenamegroups = OrderedDict()
@@ -176,9 +152,10 @@ for row in masterlist:
 # So let's have racedict hold raceids , and the racename / officename will be a value.
     if row['raceid'] not in racedict:
         racedict[row['raceid']] = OrderedDict()
-        for item in ["votecount", "precinctstotal", "precinctsreporting", "electtotal", "precinctsreportingpct"]:
+        for item in ["electtotal", "precinctsreporting", "precinctsreportingpct", "precinctstotal"]:
             racedict[row['raceid']][item] = 0
-        racedict[row['raceid']]['officename'] = row['officename']
+        for item in ['officeid', 'officename', 'racetypeid', 'seatname', 'seatnum']:
+            racedict[row['raceid']][item] = row[item]        
 
     # if row['FullRace'] not in racedict:
         # racedict[row['FullRace']] = OrderedDict()
@@ -192,7 +169,7 @@ for row in masterlist:
     if row['polid'] not in racedict[row['raceid']]['polid']:
         racedict[row['raceid']]['polid'][row['polid']] = {}
         racedict[row['raceid']]['polid'][row['polid']]['votecount'] = 0
-        for item in ['first', 'last', 'party']:
+        for item in ['first', 'incumbent', 'last', 'party', 'runoff', 'uncontested', 'winner']:
             racedict[row['raceid']]['polid'][row['polid']][item] = row[item]
     # if row['FullName'] not in racedict[row['FullRace']]['Candidates']:
         # racedict[row['FullRace']]['Candidates'][row['FullName']] = {}
@@ -202,6 +179,7 @@ for row in masterlist:
     if row['reportingunitid'] not in racedict[row['raceid']]['reportingunitid']:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']] = OrderedDict()
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['polid'] = OrderedDict()
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['reportingunitname'] = row['reportingunitname']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreporting'] = row['precinctsreporting']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctstotal'] = row['precinctstotal']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreportingpct'] = row['precinctsreportingpct']
@@ -261,6 +239,14 @@ for paper in paperdict:
                 fml.append(raceid)
     paperdict[paper] = fml
 
+    
+with open("paperdict.pickle", "wb") as f:
+    pickle.dump(paperdict, f)
+with open("masterlist.pickle", "wb") as f:
+    pickle.dump(masterlist, f)
+with open("racedict.pickle", "wb") as f:
+    pickle.dump(racedict, f)
+    
 # for paper in paperdict:   # HEY!
     # fml = []
     # papergroupdict[paper] = OrderedDict()
