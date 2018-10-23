@@ -17,6 +17,7 @@ import os
 import sys
 from subprocess import Popen
 import pickle
+from decimal import *
 
 
 # primary = True
@@ -29,10 +30,11 @@ import pickle
 datadir = configuration.datadir
 resultscomposite = configuration.resultscomposite
 papers = configuration.papers
+getcontext().prec = 10      # Precision
+pp = pprint.PrettyPrinter(indent=4)
 
 app = Flask(__name__)
 freezer = Freezer(app)
-pp = pprint.PrettyPrinter(indent=4)
 
 
 # folders = sorted(list(glob.glob(datadir + "*")), reverse=True)  # Find the latest time-stamped folder
@@ -143,6 +145,23 @@ for row in masterlist:
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
 
+for race in racedict:
+    if racedict[race]['precinctstotal'] == 0:
+        racedict[race]['precinctsreportingpct'] = 0
+    else:
+        racedict[race]['precinctsreportingpct'] = (
+            Decimal(racedict[race]['precinctsreporting']) / 
+            Decimal(racedict[race]['precinctstotal'])
+            )
+    for polid in racedict[race]['polid']:
+        if racedict[race]['electtotal'] == 0:
+            racedict[race]['polid'][polid]['votepct'] = 0
+        else:
+            racedict[race]['polid'][polid]['votepct'] = (
+                Decimal(racedict[race]['polid'][polid]['votecount']) /
+                Decimal(racedict[race]['electtotal'])
+                )
+    
 paperdict = {}
 papergroupdict = OrderedDict()
 for paper in papers:
@@ -160,8 +179,7 @@ for paper in paperdict:
         if raceid in paperdict[paper]:
             if raceid not in fml:
                 fml.append(raceid)
-    paperdict[paper] = fml
-
+    paperdict[paper] = fml    
     
 with open("paperdict.pickle", "wb") as f:
     pickle.dump(paperdict, f)
