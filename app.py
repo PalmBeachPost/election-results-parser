@@ -216,6 +216,7 @@ def maintemplate(paper):
     return render_template(template,
                            DetailsWanted=False,
                            paper=masterdict[paper],
+                           papername=paper,
 #                            groupdict=groupdict,
 #                           papergroupdict=papergroupdict,
                            # racedict=racedict,
