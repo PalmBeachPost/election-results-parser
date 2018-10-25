@@ -1,5 +1,5 @@
 <html><head>
-<title>Election results for {{ paper }}</title>
+<title>Election results for {{ papername }}</title>
 <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet"> 
 <link href="{{url_for('static', filename='elexstyles.css')}}" rel="stylesheet">
 </head>
@@ -27,8 +27,17 @@
                 {%- if racename != groupname -%}
                     <h3>{{ racename }}</h3>
                 {% endif %}
-
-                </h3>
+                <table class="main" id="{{ racename|slugifier }}">
+                    <tr><th class="name"></th><th class="votes">Votes</th><th class="pct">Percent</th></tr>
+                {%- for polid in paper[groupname][raceid]['polid']  -%}
+                    {%- set pol = paper[groupname][raceid]['polid'][polid] -%}
+                    <tr>
+                        <td class="name">{{ pol['first'] }} {{ pol['last'] }}</td>
+                        <td class="votes">{{ pol['votecount'] }}</td>
+                        <td class="pct">{{ pol['votepct'] }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
             </div>
 
         {% endfor %}
