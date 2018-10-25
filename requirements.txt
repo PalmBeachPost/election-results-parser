@@ -2,3 +2,4 @@ frozen-flask
 flask
 awesome-slugify
 requests
+simplejson
