@@ -45,23 +45,23 @@ freezer = Freezer(app)
         # print(quit)
 
 
-def get_timestamp():
-    global folder
-    rawtimestamp = folder.split("-")[1].replace("/", "")
-    hour = int(rawtimestamp[0:2])
-    pm = False
-    if hour > 12:
-        hour = hour - 12
-        pm = True
-    if hour == 0:
-        hour = 12
-    hour = str(hour)
-    timestamp = hour + ":" + rawtimestamp[2:4]
-    if pm:
-        timestamp = timestamp + " p.m."
-    else:
-        timestamp = timestamp + " a.m."
-    return(timestamp)
+# def get_timestamp():
+    # global folder
+    # rawtimestamp = folder.split("-")[1].replace("/", "")
+    # hour = int(rawtimestamp[0:2])
+    # pm = False
+    # if hour > 12:
+        # hour = hour - 12
+        # pm = True
+    # if hour == 0:
+        # hour = 12
+    # hour = str(hour)
+    # timestamp = hour + ":" + rawtimestamp[2:4]
+    # if pm:
+        # timestamp = timestamp + " p.m."
+    # else:
+        # timestamp = timestamp + " a.m."
+    # return(timestamp)
 
 
 @app.template_filter('comma')
@@ -80,7 +80,7 @@ def pct(incoming):
 
 @app.template_filter('slugifier')
 def slugifier(text):
-    return(slugify(text, to_lower=True))
+    return(slugify(text))
 
 
 def cleanrow(row):
@@ -195,18 +195,19 @@ def maintemplate(paper):
     template = 'core.html'
     global paperdict
     global racedict
-    global papergroupdict
+#    global papergroupdict
     global reportingdict
-    groupdict = papergroupdict[paper]
+#     groupdict = papergroupdict[paper]
     return render_template(template,
                            DetailsWanted=False,
-                           groupdict=groupdict,
-                           papergroupdict=papergroupdict,
+#                            groupdict=groupdict,
+#                           papergroupdict=papergroupdict,
                            racedict=racedict,
                            paperdict=paperdict,
                            paper=paper,
-                           reportingdict=reportingdict,
-                           timestamp=get_timestamp())
+                           reportingdict=reportingdict
+#                            timestamp=get_timestamp()
+                           )
 
 
 @freezer.register_generator
@@ -255,10 +256,10 @@ if __name__ == '__main__':
             freezer.freeze()
         except WindowsError:
             print("\tGot that standard Windows error about deleting Git stuff. Life goes on.")
-        print("\tAttempting to run post-processing script.")
+        print("\tAttempting to run post-processing script IF WE HAD ONE.")
 #         p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
-        p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
-        stdout, stderr = p.communicate()
+#        p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
+#        stdout, stderr = p.communicate()
         print("\tProcessing should be complete.")
     else:
         # from werkzeug.serving import run_simple
