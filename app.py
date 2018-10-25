@@ -179,7 +179,21 @@ for paper in paperdict:
         if raceid in paperdict[paper]:
             if raceid not in fml:
                 fml.append(raceid)
-    paperdict[paper] = fml    
+    paperdict[paper] = fml
+
+# Now we have paperdict holding a list of papers. And each paper includes the raceid, which is great.
+# But let's take this just a step farther -- we have some races with common names, e.g. "U.S. Congress"
+# So let's take a look at the officename and build against that, such that:
+# masterdict -> papername -> group of officenames -> individual races -> everything from racedict       
+
+masterdict = OrderedDict()
+for paper in paperdict:
+    masterdict[paper] = OrderedDict()
+    for raceid in paperdict[paper]:
+        groupname = racedict[raceid]['officename']
+        if groupname not in masterdict[paper]:
+            masterdict[paper][groupname] = OrderedDict()
+        masterdict[paper][groupname][raceid] = racedict[raceid]    
     
 with open("paperdict.pickle", "wb") as f:
     pickle.dump(paperdict, f)
@@ -193,18 +207,20 @@ with open("racedict.pickle", "wb") as f:
 def maintemplate(paper):
     print("Trying to generate for " + paper)
     template = 'core.html'
-    global paperdict
-    global racedict
+    # global paperdict
+    # global racedict
+    global masterdict
 #    global papergroupdict
     global reportingdict
 #     groupdict = papergroupdict[paper]
     return render_template(template,
                            DetailsWanted=False,
+                           paper=masterdict[paper],
 #                            groupdict=groupdict,
 #                           papergroupdict=papergroupdict,
-                           racedict=racedict,
-                           paperdict=paperdict,
-                           paper=paper,
+                           # racedict=racedict,
+                           # paperdict=paperdict,
+                           # paper=paper,
                            reportingdict=reportingdict
 #                            timestamp=get_timestamp()
                            )
