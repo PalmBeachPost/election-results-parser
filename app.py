@@ -88,7 +88,9 @@ def cleanrow(row):
         if row[item] == '':
             print(item)
             print(row)
-        row[item] = int(row[item])
+            row[item] = 0
+        else:
+            row[item] = int(row[item])
     # precinctsreportingpct
     # votepct
     return(row)
