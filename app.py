@@ -126,15 +126,15 @@ for row in masterlist:
 
 # Now, we want everything keyed to the reportingunitid instead of the county name, right?
         racedict[row['raceid']]['reportingunitid'] = OrderedDict()
-        racedict[row['raceid']]['polid'] = OrderedDict()
-    if row['polid'] not in racedict[row['raceid']]['polid']:
-        racedict[row['raceid']]['polid'][row['polid']] = {}
-        racedict[row['raceid']]['polid'][row['polid']]['votecount'] = 0
+        racedict[row['raceid']]['candidateid'] = OrderedDict()
+    if row['candidateid'] not in racedict[row['raceid']]['candidateid']:
+        racedict[row['raceid']]['candidateid'][row['candidateid']] = {}
+        racedict[row['raceid']]['candidateid'][row['candidateid']]['votecount'] = 0
         for item in ['first', 'incumbent', 'last', 'party', 'runoff', 'uncontested', 'winner']:
-            racedict[row['raceid']]['polid'][row['polid']][item] = row[item]
+            racedict[row['raceid']]['candidateid'][row['candidateid']][item] = row[item]
     if row['reportingunitid'] not in racedict[row['raceid']]['reportingunitid']:
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']] = OrderedDict()
-        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['polid'] = OrderedDict()
+        racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['candidateid'] = OrderedDict()
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['reportingunitname'] = row['reportingunitname']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctsreporting'] = row['precinctsreporting']
         racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['precinctstotal'] = row['precinctstotal']
@@ -143,8 +143,8 @@ for row in masterlist:
         racedict[row['raceid']]['precinctstotal'] += row['precinctstotal']
         racedict[row['raceid']]['precinctsreporting'] += row['precinctsreporting']
     racedict[row['raceid']]['reportingunitid'][row['reportingunitid']]['electtotal'] = row['electtotal']
-    racedict[row['raceid']]['polid'][row['polid']]['votecount'] += row['votecount']
-    racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['polid']] = row['votecount']
+    racedict[row['raceid']]['candidateid'][row['candidateid']]['votecount'] += row['votecount']
+    racedict[row['raceid']]['reportingunitid'][row['reportingunitid']][row['candidateid']] = row['votecount']
     racedict[row['raceid']]['electtotal'] += row['votecount']
 
 for race in racedict:
@@ -155,12 +155,12 @@ for race in racedict:
             Decimal(racedict[race]['precinctsreporting']) / 
             Decimal(racedict[race]['precinctstotal'])
             )
-    for polid in racedict[race]['polid']:
+    for candidateid in racedict[race]['candidateid']:
         if racedict[race]['electtotal'] == 0:
-            racedict[race]['polid'][polid]['votepct'] = 0
+            racedict[race]['candidateid'][candidateid]['votepct'] = 0
         else:
-            racedict[race]['polid'][polid]['votepct'] = (
-                Decimal(racedict[race]['polid'][polid]['votecount']) /
+            racedict[race]['candidateid'][candidateid]['votepct'] = (
+                Decimal(racedict[race]['candidateid'][candidateid]['votecount']) /
                 Decimal(racedict[race]['electtotal'])
                 )
     

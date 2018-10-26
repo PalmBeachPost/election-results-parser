@@ -29,8 +29,8 @@
                 {% endif %}
                 <table class="main" id="{{ racename|slugifier }}">
                     <tr><th class="name"></th><th class="votes">Votes</th><th class="pct">Percent</th></tr>
-                {%- for polid in paper[groupname][raceid]['polid']  -%}
-                    {%- set pol = paper[groupname][raceid]['polid'][polid] -%}
+                {%- for candidateid in paper[groupname][raceid]['candidateid']  -%}
+                    {%- set pol = paper[groupname][raceid]['candidateid'][candidateid] -%}
                     <tr>
                         <td class="name">{{ pol['first'] }} {{ pol['last'] }}</td>
                         <td class="votes">{{ pol['votecount'] }}</td>
