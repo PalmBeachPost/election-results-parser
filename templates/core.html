@@ -24,17 +24,16 @@
                 {% endif %}
             {% endif %}
             <div class="race" id="{{ raceid|slugifier }}">
-                {%- if racename != groupname -%}
-                    <h3>{{ racename }}</h3>
-                {% endif %}
+                {%- if racename != groupname -%}<h3>{{ racename }}</h3>{% endif %}
                 <table class="main" id="{{ racename|slugifier }}">
-                    <tr><th class="name"></th><th class="votes">Votes</th><th class="pct">Percent</th></tr>
+                    <tr><th class="name"></th><th class="votes">Votes</th><th class="pct">Percent</th><th class="progress">&nbsp;</th></tr>
                 {%- for candidateid in paper[groupname][raceid]['candidateid']  -%}
                     {%- set pol = paper[groupname][raceid]['candidateid'][candidateid] -%}
                     <tr>
                         <td class="name">{{ pol['first'] }} {{ pol['last'] }}</td>
-                        <td class="votes">{{ pol['votecount'] }}</td>
-                        <td class="pct">{{ pol['votepct'] }}</td>
+                        <td class="votes">{{ pol['votecount']|int|comma }}</td>
+                        <td class="pct">{{ pol['votepct']|percentageifier }}%</td>
+                        <td class="progress">&nbsp;<progress value="{{ pol['votepct']|hunnertifier }}" max="100"></progress>
                     </tr>
                 {% endfor %}
                 </table>

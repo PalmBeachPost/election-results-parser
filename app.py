@@ -82,7 +82,17 @@ def pct(incoming):
 def slugifier(text):
     return(slugify(text))
 
+    
+@app.template_filter('percentageifier')
+def percentageifier(text):   
+    return(str((Decimal(100) * Decimal(text)).quantize(Decimal("1.0"))))
 
+
+@app.template_filter('hunnertifier')
+def hunnertifier(text):   
+    return(str(int((Decimal(100) * Decimal(text)).quantize(Decimal("1")))))
+    
+    
 def cleanrow(row):
     for item in ["electtotal", "precinctsreporting", "precinctstotal", "votecount"]:
         if row[item] == '':
