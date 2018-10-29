@@ -37,7 +37,7 @@
                     </tr>
                 {% endfor %}
                 </table>
-                <div class="tdnote">&nbsp;{{ race['precinctsreporting']|int|comma }} ({{ race['precinctsreportingpct']|percentageifier }}%) of {{ race['precinctstotal']|int|comma }} precincts reporting.</div>
+                <div class="tdnote">&nbsp;{{ race['precinctsreporting']|int|comma }} ({{ race['precinctsreportingpct']|percentageifier }}%) of {{ race['precinctstotal']|int|comma }} precincts reporting at {{ race['lastupdated']|timestampifier }}</div>
             </div>
 
         {% endfor %}

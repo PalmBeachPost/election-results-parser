@@ -3,3 +3,4 @@ flask
 awesome-slugify
 requests
 simplejson
+dateparser

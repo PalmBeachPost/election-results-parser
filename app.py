@@ -5,6 +5,7 @@ To-do list:
 from flask import Flask, render_template, redirect, url_for, request   # External dependency
 from flask_frozen import Freezer
 from slugify import slugify         # awesome-slugify, from requirements
+import dateparser
 
 import configuration    # configuration.py, with user-defined variables.
 
@@ -92,6 +93,16 @@ def percentageifier(text):
 def hunnertifier(text):   
     return(str(int((Decimal(100) * Decimal(text)).quantize(Decimal("1")))))
     
+
+@app.template_filter('timestampifier')
+def timestampifier(text):
+    dateobject = dateparser.parse(text)
+    thingy = datetime.datetime.strftime(dateobject, "%I:%M %p")     # 05:23 PM
+    if thingy[0] == "0":
+        thingy = thingy[1:]     # Strip off 0 prefix for hours less than 10
+    thingy = thingy.replace(" AM", " a.m.").replace(" PM", " p.m.")
+    return(thingy)
+
     
 def cleanrow(row):
     for item in ["electtotal", "precinctsreporting", "precinctstotal", "votecount"]:
@@ -131,7 +142,7 @@ for row in masterlist:
         racedict[row['raceid']] = OrderedDict()
         for item in ["electtotal", "precinctsreporting", "precinctsreportingpct", "precinctstotal"]:
             racedict[row['raceid']][item] = 0
-        for item in ['officeid', 'officename', 'racetypeid', 'seatname', 'seatnum']:
+        for item in ['officeid', 'officename', 'racetypeid', 'seatname', 'seatnum', 'lastupdated']:
             racedict[row['raceid']][item] = row[item]        
 
 # Now, we want everything keyed to the reportingunitid instead of the county name, right?
