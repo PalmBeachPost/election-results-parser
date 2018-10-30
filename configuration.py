@@ -18,3 +18,12 @@ datadir = "./rawscrapings/"
 
 # Location of Elex-CSV-formatted scraper output combined
 resultscomposite = "./resultscomposite.csv"
+
+# Location of file that can be dropped into Google Sheets for editing of race details. Want to declare a winner?
+cleaningpre = "./resultspreclean.csv"
+
+# Google Sheets ID to processed "preclean" file
+cleaningsheet = ""
+
+# Processed file with correct dropped races, declared races, dropped candidates, all that.
+cleaningdone = "./resultstobeprocessed.csv"
