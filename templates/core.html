@@ -30,7 +30,7 @@
                 {%- for candidateid in paper[groupname][raceid]['candidateid']  -%}
                     {%- set pol = paper[groupname][raceid]['candidateid'][candidateid] -%}
                     <tr>
-                        <td class="name">{{ pol['first'] }} {{ pol['last'] }}</td>
+                        <td class="name">{% if pol['first']|length > 0%}{{ pol['first'] }} {% endif %}{{ pol['last'] }}</td>
                         <td class="votes">{{ pol['votecount']|int|comma }}</td>
                         <td class="pct">{{ pol['votepct']|percentageifier }}%</td>
                         <td class="progress">&nbsp;<progress value="{{ pol['votepct']|hunnertifier }}" max="100"></progress>
