@@ -26,6 +26,14 @@ def cleanline(line):
     for partyneverwanted in partiesneverwanted:
         if partyneverwanted == line['party']:
             line['spikepol'] = "y"
+    if len(line['first']) > 0 and len(line['last']) == 0:
+        for partyneverwanted in partiesneverwanted:
+            if line['first'] == partyneverwanted:
+                line['spikepol'] = "y"
+        if line['first'] == "YES":
+            line['first'] = "Yes"
+        elif line['first'] == "NO":
+            line['first'] = "No"
     return(line)
 
 
