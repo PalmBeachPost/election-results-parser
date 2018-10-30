@@ -249,12 +249,39 @@ def maintemplate(paper):
 #                            timestamp=get_timestamp()
                            )
 
+@app.route('/<paper>/print.txt')
+def printtemplate(paper):
+    print("Trying to generate for " + paper)
+    template = 'print.txt'
+    # global paperdict
+    # global racedict
+    global masterdict
+#    global papergroupdict
+    global reportingdict
+#     groupdict = papergroupdict[paper]
+    return render_template(template,
+                           DetailsWanted=False,
+                           paper=masterdict[paper],
+                           papername=paper,
+#                            groupdict=groupdict,
+#                           papergroupdict=papergroupdict,
+                           # racedict=racedict,
+                           # paperdict=paperdict,
+                           # paper=paper,
+                           reportingdict=reportingdict
+#                            timestamp=get_timestamp()
+                           )
 
+                           
+                           
+                           
 @freezer.register_generator
 def getpapernames():
     global paperdict
     for paper in paperdict:
         yield "/" + paper + "/main.html"
+        yield "/" + paper + "/print.txt"
+
 
 # In[18]:
 
