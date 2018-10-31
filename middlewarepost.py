@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import requests
 
 import configuration     # local file
@@ -10,38 +5,21 @@ import configuration     # local file
 import csv
 from collections import OrderedDict
 
-
-# In[2]:
-
 cleaningsheet = configuration.cleaningsheet
 cleaningtemp = configuration.cleaningtemp
 cleaningdone = configuration.cleaningdone
 resultscomposite = configuration.resultscomposite
 
-
-# In[3]:
-
 # Sample sheet:
 # https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/edit?usp=sharing
-# Sample methodology, then:
+# Sample URL, then:
 # https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/export?format=csv
 cleaningsheeturl = "https://docs.google.com/spreadsheets/d/" + cleaningsheet + "/export?format=csv"
 with open(cleaningtemp, "wb") as f:
     f.write(requests.get(cleaningsheeturl).content)
 
-
-# In[4]:
-
 with open(cleaningtemp, "r") as f:
     cleaningtemp = list(csv.DictReader(f))
-
-
-# In[ ]:
-
-
-
-
-# In[5]:
 
 spikedict = OrderedDict()
 cleaning = OrderedDict()
@@ -59,14 +37,8 @@ for row in cleaningtemp:
     if candidateid not in cleaning[raceid]:
         cleaning[raceid][candidateid] = row
 
-
-# In[6]:
-
 with open(resultscomposite, "r") as f:
     masterlist = list(csv.DictReader(f))
-
-
-# In[7]:
 
 localmatches = ["first", "last", "party", "incumbent", "runoff", "winner"]
 racematches = ["officename", "seatname", "seatnum"]
@@ -92,14 +64,3 @@ with open(cleaningdone, "w", newline="") as f:
                 for item in racematches:      # Match race-level fixes by getting 'em from first entry
                     row[item] = keyrow[item]
                 writer.writerow(list(row.values()))
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
