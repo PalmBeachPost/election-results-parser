@@ -22,8 +22,11 @@ resultscomposite = "./resultscomposite.csv"
 # Location of file that can be dropped into Google Sheets for editing of race details. Want to declare a winner?
 cleaningpre = "./resultspreclean.csv"
 
-# Google Sheets ID to processed "preclean" file
-cleaningsheet = ""
+# Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
+cleaningsheet = "1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00"
+
+# Name to temporary storage file of exported Google Sheet CSV from above
+cleaningtemp = "./resultscleaningtemp.csv"
 
 # Processed file with correct dropped races, declared races, dropped candidates, all that.
-cleaningdone = "./resultstobeprocessed.csv"
+cleaningdone = "./resultscleaned.csv"

@@ -30,6 +30,7 @@ from decimal import *
 
 datadir = configuration.datadir
 resultscomposite = configuration.resultscomposite
+cleaningdone = configuration.cleaningdone
 papers = configuration.papers
 getcontext().prec = 10      # Precision
 pp = pprint.PrettyPrinter(indent=4)
@@ -117,7 +118,8 @@ def cleanrow(row):
     return(row)
 
 
-with open(resultscomposite, "r") as f:    # Import the data and do some basic cleaning
+# with open(resultscomposite, "r") as f:    # Import the data and do some basic cleaning
+with open(cleaningdone, "r") as f:    # Import the data and do some basic cleaning
     masterlist = []
     for row in csv.DictReader(f):
         masterlist.append(cleanrow(row))
