@@ -104,7 +104,39 @@ def timestampifier(text):
     thingy = thingy.replace(" AM", " a.m.").replace(" PM", " p.m.")
     return(thingy)
 
-    
+
+@app.template_filter('partyfier')
+def partyfier(party):
+    prefix = " ("
+    suffix = ")"
+    if len(party) == 0:
+        thingy = ""
+    elif "gop" in party.lower() or "rep" in party.lower():
+        thingy = prefix + "R" + suffix
+    elif "dem" in party.lower():
+        thingy = prefix + "D" + suffix
+    elif "libertarian" in party.lower():
+        thingy = prefix + "LIB" + suffix
+    elif "reform" in party.lower():
+        thingy = prefix + "Reform" + suffix
+    elif "green" in party.lower():
+        thingy = prefix + "Green" + suffix
+    elif "no party" in party.lower() or "npa" in party.lower():
+        thingy = ""
+    else:
+        thingy = ""
+    return(thingy)
+
+
+@app.template_filter('incumbencyer')
+def incumnbencyer(incumbent):
+    if "y" in incumbent.lower() or "true" in incumbent.lower():
+        thingy = " *"
+    else:
+        thingy = ""
+    return(thingy)
+
+
 def cleanrow(row):
     for item in ["electtotal", "precinctsreporting", "precinctstotal", "votecount"]:
         if row[item] == '':
