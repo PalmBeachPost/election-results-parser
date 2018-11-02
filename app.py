@@ -317,10 +317,28 @@ def printtemplate(paper):
 @freezer.register_generator
 def getpapernames():
     global paperdict
+    global racedict
     for paper in paperdict:
         yield "/" + paper + "/main.html"
         yield "/" + paper + "/print.txt"
-
+        # groupnames = []
+        # racenames = []
+        # for raceid in paperdict[paper]:
+            # groupname = racedict[raceid]['officename']
+            # seatname = racedict[raceid]['seatname']
+            # seatnum = racedict[raceid]['seatnum']
+            # racename = groupname
+            # if len(seatname + seatnum) > 0:   # if we have those details:
+                # if len(seatname) > 0:   # prefer seatname to seatnum
+                    # racename += " " + seatname
+                # else:
+                    # racename += " " + seatnum
+            # if groupname not in groupnames:
+                # groupnames.append(groupname)
+                # yield "/" + paper + "/racegroups/" + slugify(groupname)
+            # if racename not in racenames:
+                # racenames.append(racename)
+                # yield "/" + paper + "/races" + slugify(racename)
 
 # In[18]:
 
