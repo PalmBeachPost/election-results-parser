@@ -6,7 +6,7 @@ This was built to allow people to publish election results in near-real time, us
 
 Any code that works or reads well should be credited to [Caitlin Ostroff](https://github.com/ceostroff). Any code that fails or is profane should be blamed on [Mike Stucka](https://github.com/stucka).
 
-Friend of the project [Acton Gorton](https://github.com/actongorton) suggested we should use an alternative data model, known as [NIST SP 1500-100](https://www.nist.gov/itl/voting/interoperability/election-results-reporting-cdf). Instead, we're using Elex-CSV but is built firmly against the [XKCD 2054 standard](https://xkcd.com/2054/).
+Friend of the project [Acton Gorton](https://github.com/actongorton) suggested we should use an alternative data model, known as [NIST SP 1500-100](https://www.nist.gov/itl/voting/interoperability/election-results-reporting-cdf). Instead, we're using Elex-CSV for the data. However, the code is built squarely against the [XKCD 2054 standard](https://xkcd.com/2054/).
 
 Installation: Clone repo. Use Python 3. Run *pip install -r requirements.txt* Start editing the configuration file.
 
@@ -19,5 +19,6 @@ The files:
 <li>middlewarepost.py -- Take your composited CSV and alter it based on your Google Sheet output. Flag races you haven't seen before (but add 'em anyway to the new results file).
 <li>app.py -- a Python Flask app that generates HTML and text files for your races. To actually publish, run *python app.py fml*
 <li>templates directory -- where Flask gets its stuff. Mad-Libs in the Jinja2 format.
+<li>static directory -- where files you want to include traditionally go; things like CSS, logos, dynamic iframe scripts.
 <li>built directory -- where Flask puts its stuff.
 
