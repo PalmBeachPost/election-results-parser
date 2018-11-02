@@ -1,18 +1,19 @@
-This is an effort to parse Florida election results in near-real time. At the time of initial commit, it's more of a rapid prototype than a successfully planned, well-executed bit of reliable software. Some of that will change. The state has problems providing the source data in a reliable format on time, so there's only so much we can do.
+This is an elections results management, editing, parsing, web publishing and print publishing solution based around the *Elex-CSV* pseudo-standard.
+In theory, you could go live in minutes by using the [Elex](https://github.com/newsdev/elex) package from the New York Times and National Public Radio, using results from the Associated Press.
+This was built to allow people to publish election results in near-real time, using AP results, local scrapers or a combination of the two. [Florida-election-results](https://github.com/PalmBeachPost/florida-election-results) is one example of this, pulling in results from a state-level scraper and several county-level scrapers.
+Any code that works or reads well should be credited to [Caitlin Ostroff](https://github.com/ceostroff). Any code that fails or is profane should be blamed on [Mike Stucka](https://github.com/stucka).
+Friend of the project [Acton Gorton](https://github.com/actongorton) suggested we should use an alternative data model, known as [NIST SP 1500-100](https://www.nist.gov/itl/voting/interoperability/election-results-reporting-cdf). Instead, we're using Elex-CSV but is built firmly against the [XKCD 2054 standard](https://xkcd.com/2054/).
+
+Installation: Clone repo. Use Python 3. Run *pip install -r requirements.txt* Start editing the configuration file.
 
 The files:
-<ul>
-<li>getdata.bat/getresults.sh: Windows and Linux scripts to call the other stuff:
-<li>resultsdownloader.py: From the Florida secretary of state's office, download the two pipe-delimited files and one CSV file. At the time of writing, also download results files for Palm Beach County.
-<li> pipetocsv.py: A very hastily written file to take the pipe-delimited files, rework the data, and transform them into the CSV-style format. (Not all the same data is available; it's missing at least middle names and party.)
-<li> app.py:
-<ul>
-<li>Import one of the CSVs.
-<li>Build usable data structures.
-<li>Pass those data structures off to Flask
-<li>Use Flask to build HTML from templates for each media outlet specified near the top of app.py.
-<li>Use Frozen Flask to save them as static HTML ("bake them out")
-</ul>
-<li> postbake.sh: Do stuff with baked-out files, like move them to where the web server can see 'em
-<li> requirements.txt: You want to run "pip install -r requirements.txt" to get the basic software working. You really should be using virtualenv or similar so you don't bork up something else, and it doesn't bork up anything for you.
-</ul>
+<li>configuration.py -- Documentation on settings, particularly filenames and reportingunitids (such as county names and FIPS codes).
+<li>onescripttorunthemall.py -- It is, well, one script to run them all. This is a script drafted for the November 2018 general election to be used by The Palm Beach Post. No one else would want this particular file, but it could be a good starting point. Note that you want to run the scrapers in parallel, as this does.
+<li>composite_csvs.py -- Takes all the CSVs that sit in a directory specified in configuration.py, does the most basic check to see if they fit Elex-CSV format, and composites them into a file specified in the configuration.py. Our naming convention: 20-{state}.csv and 70-{county}.csv. The files are composited in alphabetical order, so this should put the higher-ticketed items earlier in the results.
+<li>OPTIONAL: middlewarepre.py -- Takes the composited CSV and generates another CSV with each race name, candidate name, incumbency status, party and some other stuff that can be dropped into Google Sheets for editing.
+<li>Google Sheets: If nothing else, you'll want to drop lots of races. If you've got state-level reports on the U.S. senate election, you'll want to drop your county-level reporting of that race. A sample: [https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/edit?usp=sharing)
+<li>middlewarepost.py -- Take your composited CSV and alter it based on your Google Sheet output. Flag races you haven't seen before (but add 'em anyway to the new results file).
+<li>app.py -- a Python Flask app that generates HTML and text files for your races. To actually publish, run *python app.py fml*
+<li>templates directory -- where Flask gets its stuff. Mad-Libs in the Jinja2 format.
+<li>built directory -- where Flask puts its stuff.
+
