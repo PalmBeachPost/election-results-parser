@@ -287,15 +287,20 @@ def maintemplate(paper):
 def printtemplate(paper):
     print("Trying to generate for " + paper)
     template = 'print.txt'
+    global masterdict
+    hardcodingisbad = ["260540", "260550", "260830", "260840", "551919"]
+    printpaperdict = OrderedDict()
+    for raceid in masterdict[paper]:
+        if raceid not in hardcodingisbad:
+            printpaperdict[raceid] = masterdict[paper][raceid]
     # global paperdict
     # global racedict
-    global masterdict
 #    global papergroupdict
     global reportingdict
 #     groupdict = papergroupdict[paper]
     return render_template(template,
                            DetailsWanted=False,
-                           paper=masterdict[paper],
+                           paper=printpaperdict,
                            papername=paper,
 #                            groupdict=groupdict,
 #                           papergroupdict=papergroupdict,

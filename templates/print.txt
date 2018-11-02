@@ -3,3 +3,4 @@
 {% for candidateid in paper[groupname][raceid]['candidateid']  %}{% set pol = paper[groupname][raceid]['candidateid'][candidateid] %}{% if pol['first']|length > 0%}{{ pol['first']|trim }} {% endif %}{{ pol['last']|trim }}{{ pol['party']|partyfier}}{{ pol['incumbent']|incumbencyer }};{{ pol['votecount']|int|comma }};{{ pol['votepct']|percentageifier }}%
 {% endfor %}{{ race['precinctsreporting']|int|comma }} ({{ race['precinctsreportingpct']|percentageifier }}%) of {{ race['precinctstotal']|int|comma }} precincts reporting at {{ race['lastupdated']|timestampifier }}
 {% endfor %}{% endfor %}
+* Incumbent
