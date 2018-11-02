@@ -43,6 +43,7 @@ with open(resultscomposite, "r") as f:
 localmatches = ["first", "last", "party", "incumbent", "runoff", "winner"]
 racematches = ["officename", "seatname", "seatnum"]
 
+brokenraces = []
 with open(cleaningdone, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(list(masterlist[0].keys()))     # Write out header row in same Elex format
@@ -50,7 +51,9 @@ with open(cleaningdone, "w", newline="") as f:
         raceid = row["raceid"]
         candidateid = row["candidateid"]
         if raceid not in cleaning:
-            print("raceid " + raceid + " not found in list of cleaned races. Adding anyway.")
+            if raceid not in brokenraces:
+                brokenraces.append(raceid)
+                print("raceid " + raceid + " not found in list of cleaned races. Adding anyway.")
             writer.writerow(list(row.values()))
         elif "ALL" not in spikedict[raceid]:
             if candidateid not in cleaning[raceid]:
