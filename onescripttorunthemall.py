@@ -7,6 +7,7 @@ scraperdir = "../florida-election-results"
 parserdir = "../election-results-parser"
 
 parallelprocesses = ("Florida.py", "PalmBeach.py", "Miami-Dade.py")
+
 sequentialprocesses = ["composite_csvs.py", "middlewarepre.py", "middlewarepost.py", "app.py fml"]
 
 def run_process(process):
