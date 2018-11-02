@@ -312,6 +312,34 @@ def printtemplate(paper):
                            )
 
                            
+@app.route('/<paper>/races/<slugifiedracename>.html')
+def onerace(paper, slugifiedracename):
+    template = 'onerace.html'
+    global masterdict
+    global racedict
+    global paperdict
+    oneracedict = OrderedDict()
+    for raceid in paperdict[paper]:
+        groupname = racedict[raceid]['officename']
+        seatname = racedict[raceid]['seatname']
+        seatnum = racedict[raceid]['seatnum']
+        racename = groupname
+        if len(seatname + seatnum) > 0:   # if we have those details:
+            if len(seatname) > 0:   # prefer seatname to seatnum
+                racename += " " + seatname
+            else:
+                racename += " " + seatnum
+        localslug = slugify(racename)
+        if localslug == slugifiedracename:
+            oneracedict = racedict[raceid]
+            return render_template(template,
+                               oneracedict=oneracedict,
+                               papername=paper,
+                               racename=racename
+                               )
+                           
+                           
+                           
                            
                            
 @freezer.register_generator
@@ -321,24 +349,26 @@ def getpapernames():
     for paper in paperdict:
         yield "/" + paper + "/main.html"
         yield "/" + paper + "/print.txt"
-        # groupnames = []
-        # racenames = []
-        # for raceid in paperdict[paper]:
-            # groupname = racedict[raceid]['officename']
-            # seatname = racedict[raceid]['seatname']
-            # seatnum = racedict[raceid]['seatnum']
-            # racename = groupname
-            # if len(seatname + seatnum) > 0:   # if we have those details:
-                # if len(seatname) > 0:   # prefer seatname to seatnum
-                    # racename += " " + seatname
-                # else:
-                    # racename += " " + seatnum
+        groupnames = []
+        racenames = []
+        for raceid in paperdict[paper]:
+            groupname = racedict[raceid]['officename']
+            seatname = racedict[raceid]['seatname']
+            seatnum = racedict[raceid]['seatnum']
+            racename = groupname
+            if len(seatname + seatnum) > 0:   # if we have those details:
+                if len(seatname) > 0:   # prefer seatname to seatnum
+                    racename += " " + seatname
+                else:
+                    racename += " " + seatnum
             # if groupname not in groupnames:
                 # groupnames.append(groupname)
-                # yield "/" + paper + "/racegroups/" + slugify(groupname)
-            # if racename not in racenames:
-                # racenames.append(racename)
-                # yield "/" + paper + "/races" + slugify(racename)
+#                slugifiedgroupname = slugify(groupname)
+                # yield "/" + paper + "/racegroups/" + slugifiedgroupname
+            if racename not in racenames:
+                racenames.append(racename)
+                slugifiedracename = slugify(racename)
+                yield "/" + paper + "/races/" + slugifiedracename + ".html"
 
 # In[18]:
 
