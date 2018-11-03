@@ -452,6 +452,7 @@ if __name__ == '__main__':
         except WindowsError:
             print("\tGot that standard Windows error about deleting Git stuff. Life goes on.")
         print("\tAttempting to run post-processing script IF WE HAD ONE.")
+        # os.system("python postbake.py")
 #         p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
 #        p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
 #        stdout, stderr = p.communicate()

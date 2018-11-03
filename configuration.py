@@ -30,3 +30,6 @@ cleaningtemp = "./resultscleaningtemp.csv"
 
 # Processed file with correct dropped races, declared races, dropped candidates, all that.
 cleaningdone = "./resultscleaned.csv"
+
+# Path to web server folder, for processing by postbake.py
+webpath = "/var/www/html/elex20181106"
