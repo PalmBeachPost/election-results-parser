@@ -1,6 +1,6 @@
 {% for groupname in paper %}{% for raceid in paper[groupname] %}{% set race = paper[groupname][raceid] %}{% set seatnum = race['seatnum'] %}{% set seatname = race['seatname'] %}{% set racename = groupname %}{% if (seatnum ~ seatname)|length > 0 %}{% if seatname|length > 0 %}{% set racename = (racename ~ " " ~ seatname) %}{% else %}{% set racename = (racename ~ " " ~ seatnum) %}{% endif %}{% if race['racetypeid'] in ['R', 'D'] and race['party']|length > 0 %}{% set racename = (racename ~ " -- " ~ race['party']) %}{% endif %}{% endif %}{{ racename }}
 ;Votes;Percent
-{% for candidateid in paper[groupname][raceid]['candidateid']  %}{% set pol = paper[groupname][raceid]['candidateid'][candidateid] %}{% if pol['first']|length > 0%}{{ pol['first']|trim }} {% endif %}{{ pol['last']|trim }}{{ pol['party']|partyfier}}{{ pol['incumbent']|incumbencyer }};{{ pol['votecount']|int|comma }};{{ pol['votepct']|percentageifier }}%
+{% for candidateid in paper[groupname][raceid]['candidateid']  %}{% set pol = paper[groupname][raceid]['candidateid'][candidateid] %}{% if pol['first']|length > 0%}{{ pol['first']|trim }} {% endif %}{{ pol['last']|trim }}{{ pol['party']|printpartyfier}}{{ pol['incumbent']|printincumbencyer }};{{ pol['votecount']|int|comma }};{{ pol['votepct']|percentageifier }}%
 {% endfor %}{{ race['precinctsreporting']|int|comma }} ({{ race['precinctsreportingpct']|hunnertifier }}%) of {{ race['precinctstotal']|int|comma }} precincts reporting.
 {% endfor %}{% endfor %}
 * Incumbent

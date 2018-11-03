@@ -127,11 +127,43 @@ def partyfier(party):
         thingy = ""
     return(thingy)
 
+@app.template_filter('printpartyfier')
+def printpartyfier(party):
+    prefix = " ("
+    suffix = ")"
+    if len(party) == 0:
+        thingy = ""
+    elif "gop" in party.lower() or "rep" in party.lower():
+        thingy = prefix + "R" + suffix
+    elif "dem" in party.lower():
+        thingy = prefix + "D" + suffix
+    # elif "libertarian" in party.lower():
+        # thingy = prefix + "LIB" + suffix
+    # elif "reform" in party.lower():
+        # thingy = prefix + "Reform" + suffix
+    # elif "green" in party.lower():
+        # thingy = prefix + "Green" + suffix
+    elif "no party" in party.lower() or "npa" in party.lower():
+        thingy = ""
+    else:
+        thingy = ""
+    return(thingy)
 
+    
+    
 @app.template_filter('incumbencyer')
 def incumnbencyer(incumbent):
     if "y" in incumbent.lower() or "true" in incumbent.lower():
         thingy = " *"
+    else:
+        thingy = ""
+    return(thingy)
+
+
+@app.template_filter('printincumbencyer')
+def printincumnbencyer(incumbent):
+    if "y" in incumbent.lower() or "true" in incumbent.lower():
+        thingy = "*"
     else:
         thingy = ""
     return(thingy)
@@ -290,9 +322,18 @@ def printtemplate(paper):
     global masterdict
     hardcodingisbad = ["260540", "260550", "260830", "260840", "551919"]
     printpaperdict = OrderedDict()
-    for raceid in masterdict[paper]:
-        if raceid not in hardcodingisbad:
-            printpaperdict[raceid] = masterdict[paper][raceid]
+    for groupname in masterdict[paper]:
+        printpaperdict[groupname] = OrderedDict()
+        for raceid in masterdict[paper][groupname]:
+            if raceid not in hardcodingisbad:
+                printpaperdict[groupname][raceid] = masterdict[paper][groupname][raceid]
+            else:
+                print("Dropping race " + raceid)
+    # fml = OrderedDict
+    # for groupname in printpaperdict:
+        # if len(printpaperdict[groupname]) > 0:  # If we actually have races in this groupname ...
+            # fml[groupname] = printpaperdict[groupname]
+    # printpaperdict = fml
     # global paperdict
     # global racedict
 #    global papergroupdict
