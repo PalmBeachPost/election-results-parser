@@ -17,6 +17,7 @@ if __name__ ==  '__main__':
     print("Beginning to scrape.")
     pool = Pool(processes=8)
     pool.map(run_process, parallelprocesses)
+    pool.close()
     print("Done scraping")
     os.chdir("../election-results-parser")
     for script in sequentialprocesses:
