@@ -149,8 +149,23 @@ def printpartyfier(party):
         thingy = ""
     return(thingy)
 
-    
-    
+
+@app.template_filter('winner')
+def winner(text):
+    if "y" in text.lower() or "true" in text.lower():
+        return("x-")
+    else:
+        return("")
+
+        
+@app.template_filter('runoff')
+def runoff(text):
+    if "y" in text.lower() or "true" in text.lower():
+        return("r-")
+    else:
+        return("")
+
+        
 @app.template_filter('incumbencyer')
 def incumnbencyer(incumbent):
     if "y" in incumbent.lower() or "true" in incumbent.lower():
