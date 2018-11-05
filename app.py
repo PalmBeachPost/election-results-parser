@@ -20,14 +20,6 @@ from subprocess import Popen
 import pickle
 from decimal import *
 
-
-# primary = True
-# datadir = "snapshots/"
-# homedir = r'/root/data/florida-election-results'
-# resultscomposite = "./resultscomposite.csv"   # Path to Final compiled CSV in Elex format, with data from all sources
-
-# racedelim = " -- "    # E.g., "U.S. Senator -- Rep."
-
 datadir = configuration.datadir
 resultscomposite = configuration.resultscomposite
 cleaningdone = configuration.cleaningdone
@@ -37,33 +29,6 @@ pp = pprint.PrettyPrinter(indent=4)
 
 app = Flask(__name__)
 freezer = Freezer(app)
-
-
-# folders = sorted(list(glob.glob(datadir + "*")), reverse=True)  # Find the latest time-stamped folder
-# folder = folders[0] + "/"
-# if not os.path.exists(folder + "done"):
-    # time.sleep(10)   # Try to beat a race condition
-    # if not os.path.exists(folder + "done"):
-        # print(quit)
-
-
-# def get_timestamp():
-    # global folder
-    # rawtimestamp = folder.split("-")[1].replace("/", "")
-    # hour = int(rawtimestamp[0:2])
-    # pm = False
-    # if hour > 12:
-        # hour = hour - 12
-        # pm = True
-    # if hour == 0:
-        # hour = 12
-    # hour = str(hour)
-    # timestamp = hour + ":" + rawtimestamp[2:4]
-    # if pm:
-        # timestamp = timestamp + " p.m."
-    # else:
-        # timestamp = timestamp + " a.m."
-    # return(timestamp)
 
 
 @app.template_filter('comma')
@@ -84,16 +49,16 @@ def pct(incoming):
 def slugifier(text):
     return(slugify(text))
 
-    
+
 @app.template_filter('percentageifier')
-def percentageifier(text):   
+def percentageifier(text):
     return(str((Decimal(100) * Decimal(text)).quantize(Decimal("1.0"))))
 
 
 @app.template_filter('hunnertifier')
-def hunnertifier(text):   
+def hunnertifier(text):
     return(str(int((Decimal(100) * Decimal(text)).quantize(Decimal("1")))))
-    
+
 
 @app.template_filter('timestampifier')
 def timestampifier(text):
@@ -127,6 +92,7 @@ def partyfier(party):
         thingy = ""
     return(thingy)
 
+
 @app.template_filter('printpartyfier')
 def printpartyfier(party):
     prefix = " ("
@@ -136,7 +102,7 @@ def printpartyfier(party):
     elif "gop" in party.lower() or "rep" in party.lower():
         thingy = prefix + "R" + suffix
     elif "dem" in party.lower():
-        thingy = prefix + "D" + suffix
+        thingy = prefix + "D" + suffix   # HEY! This should maybe go back next time
     # elif "libertarian" in party.lower():
         # thingy = prefix + "LIB" + suffix
     # elif "reform" in party.lower():
@@ -157,7 +123,7 @@ def winner(text):
     else:
         return("")
 
-        
+
 @app.template_filter('runoff')
 def runoff(text):
     if "y" in text.lower() or "true" in text.lower():
@@ -165,7 +131,7 @@ def runoff(text):
     else:
         return("")
 
-        
+
 @app.template_filter('incumbencyer')
 def incumnbencyer(incumbent):
     if "y" in incumbent.lower() or "true" in incumbent.lower():
@@ -224,7 +190,7 @@ for row in masterlist:
         for item in ["electtotal", "precinctsreporting", "precinctsreportingpct", "precinctstotal"]:
             racedict[row['raceid']][item] = 0
         for item in ['officeid', 'officename', 'racetypeid', 'seatname', 'seatnum', 'lastupdated']:
-            racedict[row['raceid']][item] = row[item]        
+            racedict[row['raceid']][item] = row[item]
 
 # Now, we want everything keyed to the reportingunitid instead of the county name, right?
         racedict[row['raceid']]['reportingunitid'] = OrderedDict()
@@ -254,7 +220,7 @@ for race in racedict:
         racedict[race]['precinctsreportingpct'] = 0
     else:
         racedict[race]['precinctsreportingpct'] = (
-            Decimal(racedict[race]['precinctsreporting']) / 
+            Decimal(racedict[race]['precinctsreporting']) /
             Decimal(racedict[race]['precinctstotal'])
             )
     for candidateid in racedict[race]['candidateid']:
@@ -265,7 +231,7 @@ for race in racedict:
                 Decimal(racedict[race]['candidateid'][candidateid]['votecount']) /
                 Decimal(racedict[race]['electtotal'])
                 )
-    
+
 paperdict = {}
 papergroupdict = OrderedDict()
 for paper in papers:
@@ -288,7 +254,7 @@ for paper in paperdict:
 # Now we have paperdict holding a list of papers. And each paper includes the raceid, which is great.
 # But let's take this just a step farther -- we have some races with common names, e.g. "U.S. Congress"
 # So let's take a look at the officename and build against that, such that:
-# masterdict -> papername -> group of officenames -> individual races -> everything from racedict       
+# masterdict -> papername -> group of officenames -> individual races -> everything from racedict
 
 masterdict = OrderedDict()
 for paper in paperdict:
@@ -297,8 +263,8 @@ for paper in paperdict:
         groupname = racedict[raceid]['officename']
         if groupname not in masterdict[paper]:
             masterdict[paper][groupname] = OrderedDict()
-        masterdict[paper][groupname][raceid] = racedict[raceid]    
-    
+        masterdict[paper][groupname][raceid] = racedict[raceid]
+
 with open("paperdict.pickle", "wb") as f:
     pickle.dump(paperdict, f)
 with open("masterlist.pickle", "wb") as f:
@@ -311,24 +277,16 @@ with open("racedict.pickle", "wb") as f:
 def maintemplate(paper):
     print("Trying to generate for " + paper)
     template = 'main.html'
-    # global paperdict
-    # global racedict
     global masterdict
-#    global papergroupdict
     global reportingdict
-#     groupdict = papergroupdict[paper]
-    return render_template(template,
-                           DetailsWanted=False,
-                           paper=masterdict[paper],
-                           papername=paper,
-#                            groupdict=groupdict,
-#                           papergroupdict=papergroupdict,
-                           # racedict=racedict,
-                           # paperdict=paperdict,
-                           # paper=paper,
-                           reportingdict=reportingdict
-#                            timestamp=get_timestamp()
-                           )
+    return render_template(
+        template,
+        DetailsWanted=False,
+        paper=masterdict[paper],
+        papername=paper,
+        reportingdict=reportingdict
+        )
+
 
 @app.route('/<paper>/print.txt')
 def printtemplate(paper):
@@ -344,32 +302,16 @@ def printtemplate(paper):
                 printpaperdict[groupname][raceid] = masterdict[paper][groupname][raceid]
             else:
                 print("Dropping race " + raceid)
-    # fml = OrderedDict
-    # for groupname in printpaperdict:
-        # if len(printpaperdict[groupname]) > 0:  # If we actually have races in this groupname ...
-            # fml[groupname] = printpaperdict[groupname]
-    # printpaperdict = fml
-    # global paperdict
-    # global racedict
-#    global papergroupdict
     global reportingdict
-#     groupdict = papergroupdict[paper]
-    return render_template(template,
-                           DetailsWanted=False,
-                           paper=printpaperdict,
-                           papername=paper,
-#                            groupdict=groupdict,
-#                           papergroupdict=papergroupdict,
-                           # racedict=racedict,
-                           # paperdict=paperdict,
-                           # paper=paper,
-                           reportingdict=reportingdict
-#                            timestamp=get_timestamp()
-                           )
+    return render_template(
+        template,
+        DetailsWanted=False,
+        paper=printpaperdict,
+        papername=paper,
+        reportingdict=reportingdict
+        )
 
-                           
-# yield "/" + paper + "/racegroups/" + slugifiedgroupname                           
-                           
+
 @app.route('/<paper>/racegroups/<slugifiedgroupname>.html')
 def racegroup(paper, slugifiedgroupname):
     template = 'racegroup.html'
@@ -384,10 +326,11 @@ def racegroup(paper, slugifiedgroupname):
             localdict = OrderedDict()
             localdict[groupname] = masterdict[paper][groupname]
             # print(localdict)
-            return render_template(template,
-                               paper=localdict,
-                               papername=paper
-                               )
+            return render_template(
+                template,
+                paper=localdict,
+                papername=paper
+                )
 
 
 @app.route('/<paper>/races/<slugifiedracename>.html')
@@ -410,14 +353,14 @@ def onerace(paper, slugifiedracename):
         localslug = slugify(racename)
         if localslug == slugifiedracename:
             oneracedict = racedict[raceid]
-            return render_template(template,
-                               oneracedict=oneracedict,
-                               papername=paper,
-                               racename=racename
-                               )
+            return render_template(
+                template,
+                oneracedict=oneracedict,
+                papername=paper,
+                racename=racename
+                )
 
 
-                               
 @freezer.register_generator
 def getpapernames():
     global paperdict
@@ -438,49 +381,19 @@ def getpapernames():
                 else:
                     racename += " " + seatnum
             if groupname not in groupnames:
-               groupnames.append(groupname)
-               slugifiedgroupname = slugify(groupname)
-               yield "/" + paper + "/racegroups/" + slugifiedgroupname + ".html"
+                groupnames.append(groupname)
+                slugifiedgroupname = slugify(groupname)
+                yield "/" + paper + "/racegroups/" + slugifiedgroupname + ".html"
             if racename not in racenames:
                 racenames.append(racename)
                 slugifiedracename = slugify(racename)
                 yield "/" + paper + "/races/" + slugifiedracename + ".html"
-
-# In[18]:
-
-# @app.route('/')
-# def bigpicture():
-    # print("Trying to generate big-picture template")
-    # global paperdict
-    # template = "bigpicture.html"
-    # return render_template(template,
-                           # paperdict=paperdict,
-                           # timestamp=get_timestamp())
-
-# @app.route('/<paper>/')
-# def smallpicture(paper):
-    # print("Trying to generate small-picture template for " + paper)
-    # template = 'smallpicture.html'
-    # global paperdict
-    # global racedict
-    # global papergroupdict
-    # global reportingdict
-    # groupdict = papergroupdict[paper]
-    # return render_template(template,
-                           # groupdict=groupdict,
-                           # papergroupdict=papergroupdict,
-                           # racedict=racedict,
-                           # paperdict=paperdict,
-                           # paper=paper,
-                           # reportingdict=reportingdict,
-                           # timestamp=get_timestamp())
 
 
 if __name__ == '__main__':
     # Fire up the Flask test server
     print("Now we're ready to actually start creating the pages.")
     if (len(sys.argv) > 1) and (sys.argv[1] == "build" or sys.argv[1] == "fml"):
-        # app.config.update(FREEZER_BASE_URL=buildurl, FREEZER_RELATIVE_URLS=True, FREEZER_DESTINATION="..\homicides-frozen")  # freezer_base_url  kills Python 3.6 for some reason
         app.config.update(FREEZER_RELATIVE_URLS=True, FREEZER_DESTINATION="./built")
         try:
             freezer.freeze()
@@ -488,16 +401,9 @@ if __name__ == '__main__':
             print("\tGot that standard Windows error about deleting Git stuff. Life goes on.")
         print("\tAttempting to run post-processing script.")
         os.system("python postbake.py")
-        print("ALl done!")
-#         p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
-#        p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
-#        stdout, stderr = p.communicate()
+        print("All done!")
         print("\tProcessing should be complete.")
     else:
-        # from werkzeug.serving import run_simple
         app.config.update(FREEZER_BASE_URL="/", FREEZER_RELATIVE_URLS=True)
-        # app.jinja_env.trim_blocks = True
-        # app.jinja_env.lstrip_blocks = True
-
         app.run(debug=True, use_reloader=True, host="0.0.0.0")
         # run_simple('localhost', 5000, app)
