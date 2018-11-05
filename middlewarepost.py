@@ -4,16 +4,24 @@ import configuration     # local file
 
 import csv
 from collections import OrderedDict
+import datetime
+import os
+import shutil
 
 cleaningsheet = configuration.cleaningsheet
 cleaningtemp = configuration.cleaningtemp
 cleaningdone = configuration.cleaningdone
 resultscomposite = configuration.resultscomposite
+snapshotsdir = configuration.snapshotsdir
+datadir = configuration.datadir
+
+timestamp = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d-%H%M%S")
 
 # Sample sheet:
 # https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/edit?usp=sharing
 # Sample URL, then:
 # https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/export?format=csv
+
 cleaningsheeturl = "https://docs.google.com/spreadsheets/d/" + cleaningsheet + "/export?format=csv"
 with open(cleaningtemp, "wb") as f:
     f.write(requests.get(cleaningsheeturl).content)
@@ -67,3 +75,8 @@ with open(cleaningdone, "w", newline="") as f:
                 for item in racematches:      # Match race-level fixes by getting 'em from first entry
                     row[item] = keyrow[item]
                 writer.writerow(list(row.values()))
+
+# snapshotsdir = configuration.snapshotsdir
+# datadir = configuration.datadir
+shutil.copytree(datadir, snapshotsdir + timestamp)
+shutil.copy2(cleaningdone, snapshotsdir + timestamp)

@@ -28,8 +28,12 @@ cleaningsheet = "1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00"
 # Name to temporary storage file of exported Google Sheet CSV from above
 cleaningtemp = "./resultscleaningtemp.csv"
 
+# path to save timestamped versions of downloaded data. Sample: "./snapshots/"
+snapshotsdir = "./snapshots/"
+
 # Processed file with correct dropped races, declared races, dropped candidates, all that.
 cleaningdone = "./resultscleaned.csv"
 
 # Path to web server folder, for processing by postbake.py
 webpath = "/var/www/html/elex20181106"
+
