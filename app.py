@@ -295,7 +295,7 @@ with open("racedict.pickle", "wb") as f:
 @app.route('/<paper>/main.html')
 def maintemplate(paper):
     print("Trying to generate for " + paper)
-    template = 'core.html'
+    template = 'main.html'
     # global paperdict
     # global racedict
     global masterdict
@@ -353,9 +353,31 @@ def printtemplate(paper):
                            )
 
                            
+# yield "/" + paper + "/racegroups/" + slugifiedgroupname                           
+                           
+@app.route('/<paper>/racegroups/<slugifiedgroupname>.html')
+def racegroup(paper, slugifiedgroupname):
+    template = 'racegroup.html'
+    global masterdict
+    global racedict
+    global paperdict
+    oneracedict = OrderedDict()
+    for raceid in paperdict[paper]:
+        groupname = racedict[raceid]['officename']
+        localslug = slugify(groupname)
+        if localslug == slugifiedgroupname:
+            localdict = OrderedDict()
+            localdict[groupname] = masterdict[paper][groupname]
+            # print(localdict)
+            return render_template(template,
+                               paper=localdict,
+                               papername=paper
+                               )
+
+
 @app.route('/<paper>/races/<slugifiedracename>.html')
 def onerace(paper, slugifiedracename):
-    template = 'onerace.html'
+    template = 'race.html'
     global masterdict
     global racedict
     global paperdict
@@ -378,11 +400,9 @@ def onerace(paper, slugifiedracename):
                                papername=paper,
                                racename=racename
                                )
-                           
-                           
-                           
-                           
-                           
+
+
+                               
 @freezer.register_generator
 def getpapernames():
     global paperdict
@@ -402,10 +422,10 @@ def getpapernames():
                     racename += " " + seatname
                 else:
                     racename += " " + seatnum
-            # if groupname not in groupnames:
-                # groupnames.append(groupname)
-#                slugifiedgroupname = slugify(groupname)
-                # yield "/" + paper + "/racegroups/" + slugifiedgroupname
+            if groupname not in groupnames:
+               groupnames.append(groupname)
+               slugifiedgroupname = slugify(groupname)
+               yield "/" + paper + "/racegroups/" + slugifiedgroupname + ".html"
             if racename not in racenames:
                 racenames.append(racename)
                 slugifiedracename = slugify(racename)
