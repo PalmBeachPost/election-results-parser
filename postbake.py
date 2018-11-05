@@ -1,6 +1,5 @@
 import configuration            # local file
 import os
-import system
 
 webpath = configuration.webpath
 

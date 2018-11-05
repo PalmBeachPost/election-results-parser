@@ -451,8 +451,9 @@ if __name__ == '__main__':
             freezer.freeze()
         except WindowsError:
             print("\tGot that standard Windows error about deleting Git stuff. Life goes on.")
-        print("\tAttempting to run post-processing script IF WE HAD ONE.")
-        # os.system("python postbake.py")
+        print("\tAttempting to run post-processing script.")
+        os.system("python postbake.py")
+        print("ALl done!")
 #         p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
 #        p = Popen(homedir + '/' + "postbake.sh", cwd=homedir)
 #        stdout, stderr = p.communicate()
