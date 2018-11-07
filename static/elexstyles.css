@@ -37,13 +37,16 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 0em;
 }
 
+th.name, td.name {
+    width: 31%
+}
 
-th.name, th.votes, th.pct, td.name, td.votes, td.pct {
-    width: 20%
+th.votes, td.votes, th.pct,  td.pct {
+    width: 17%
 }
 
 th.progress, td.progress {
-    width: 40%
+    width: 35%
 }
 
 
