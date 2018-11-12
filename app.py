@@ -52,7 +52,8 @@ def slugifier(text):
 
 @app.template_filter('percentageifier')
 def percentageifier(text):
-    return(str((Decimal(100) * Decimal(text)).quantize(Decimal("1.0"))))
+# HEY!    return(str((Decimal(100) * Decimal(text)).quantize(Decimal("1.0"))))
+    return(str((Decimal(100) * Decimal(text)).quantize(Decimal("1.000"))))
 
 
 @app.template_filter('hunnertifier')
