@@ -9,7 +9,7 @@ datadir = "./snapshots/"
 datafile = "resultscleaned.csv"
 sqlfile = "results.sqlite"
 raceidswanted = '"120000", "160000", "160800", "260890", "260260", "240180"'
-targetcsv = "/var/www/html/elexhighlights/highlights.html"
+targetcsv = "/var/www/html/elexhighlights/highlights.csv"
 candidateswanted = [
     "Andrew Gillum (D)", "Bill Nelson (D)", 'Jim Bonfiglio (D)',
     'Matt Caldwell (R)', 'Mike Caruso (R)', 'Nicole Fried (D)',
@@ -79,8 +79,9 @@ for row in highlightsraw:
     if line['candidatename'] in candidateswanted:
         masterdict[line['lastupdated']][line['candidatename']] = line['votecount']
 
+print("Writing CSV")
 with open(targetcsv, "w", newline="") as f:
-    writer = csv.writer(f)
+    writer = csv.writer(f, lineterminator="\r\n")
     row = ["lastupdated"]
     row.extend(candidateswanted)
     writer.writerow(row)
