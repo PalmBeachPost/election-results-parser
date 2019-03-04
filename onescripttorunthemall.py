@@ -6,7 +6,9 @@ from multiprocessing import Pool
 scraperdir = "../florida-election-results"
 parserdir = "../election-results-parser"
 
-parallelprocesses = ("Florida.py", "PalmBeach.py", "Miami-Dade.py")
+# parallelprocesses = ("Florida.py", "PalmBeach.py", "Miami-Dade.py")
+
+parallelprocesses = ("PalmBeach.py")
 
 sequentialprocesses = ["composite_csvs.py", "middlewarepre.py", "middlewarepost.py", "app.py fml"]
 

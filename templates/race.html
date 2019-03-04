@@ -11,7 +11,7 @@
 {%- for candidateid in oneracedict['candidateid']  -%}
     {%- set pol = oneracedict['candidateid'][candidateid] -%}
     <tr>
-        <td class="name">{{ pol['winner']|winner }}{{ pol['runoff']|winner }}{% if pol['first']|length > 0%}{{ pol['first'] }} {% endif %}{{ pol['last'] }}{{ pol['party']|partyfier}}{{ pol['incumbent']|incumbencyer }}</td>
+        <td class="name">{{ pol['winner']|winner }}{{ pol['runoff']|runoff }}{% if pol['first']|length > 0%}{{ pol['first'] }} {% endif %}{{ pol['last'] }}{{ pol['party']|partyfier}}{{ pol['incumbent']|incumbencyer }}</td>
         <td class="votes">{{ pol['votecount']|int|comma }}</td>
         <td class="pct">{{ pol['votepct']|percentageifier }}%</td>
         <td class="progress">&nbsp;<progress value="{{ pol['votepct']|hunnertifier }}" max="100"></progress>
