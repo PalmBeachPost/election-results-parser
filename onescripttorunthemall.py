@@ -8,7 +8,7 @@ parserdir = "../election-results-parser"
 
 # parallelprocesses = ("Florida.py", "PalmBeach.py", "Miami-Dade.py")
 
-parallelprocesses = ("PalmBeach.py")
+parallelprocesses = ("PalmBeach.py", "donothing.py")
 
 sequentialprocesses = ["composite_csvs.py", "middlewarepre.py", "middlewarepost.py", "app.py fml"]
 
