@@ -13,11 +13,11 @@
             {%- set seatnum = race['seatnum'] -%}
             {%- set seatname = race['seatname'] -%}
             {%- set racename = groupname -%}
-            {%- if (seatnum ~ seatname)|length > 0 -%}
-                {%- if seatname|length > 0 %}
-                    {% set racename = (racename ~ " " ~ seatname) %}
+            {%- if (seatnum ~ seatname)|trim|length > 0 -%}
+                {%- if seatname|trim|length > 0 %}
+                    {% set racename = (racename ~ " " ~ seatname|trim) %}
                 {%- else %}
-                    {% set racename = (racename ~ " " ~ seatnum) %}
+                    {% set racename = (racename ~ " " ~ seatnum|trim) %}WHISKEY
                 {% endif %}
                 {% if race['racetypeid'] in ['R', 'D'] and race['party']|length > 0 %}
                     {% set racename = (racename ~ " -- " ~ race['party']) %}
