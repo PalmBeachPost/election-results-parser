@@ -2,7 +2,8 @@
 webpath = "/var/www/html/elex20190312"
 
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
-cleaningsheet = "1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00"
+cleaningsheet = "14tgfhdEasqjojj8_sbV9h5CqPP8lsShQRE-K2bvV0eo"
+
 
 # For papers, you're looking for the reportingunitids to drive the show.
 papers = {
