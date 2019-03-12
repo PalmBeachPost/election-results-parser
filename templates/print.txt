@@ -2,5 +2,6 @@
 ;Votes;Percent
 {% for candidateid in paper[groupname][raceid]['candidateid']  %}{% set pol = paper[groupname][raceid]['candidateid'][candidateid] %}{{ pol['winner']|winner }}{{ pol['runoff']|runoff }}{% if pol['first']|length > 0%}{{ pol['first']|trim }} {% endif %}{{ pol['last']|trim }}{{ pol['party']|printpartyfier}}{{ pol['incumbent']|printincumbencyer }};{{ pol['votecount']|int|comma }};{{ pol['votepct']|percentageifier }}%
 {% endfor %}{{ race['precinctsreporting']|int|comma }} of {{ race['precinctstotal']|int|comma }} precincts reporting.
+
 {% endfor %}{% endfor %}
 Key: * Incumbent, x- Winner, r- Runoff
