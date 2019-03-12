@@ -13,7 +13,7 @@
             {%- set seatnum = race['seatnum'] -%}
             {%- set seatname = race['seatname'] -%}
             {%- set racename = groupname -%}
-            {%- if (seatnum ~ seatname)|length > 0 -%}
+          {%- if (seatnum ~ seatname)|length > 0 -%}
                 {%- if seatname|length > 0 %}
                     {% set racename = (racename ~ " " ~ seatname) %}
                 {%- else %}
