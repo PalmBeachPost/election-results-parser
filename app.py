@@ -120,11 +120,19 @@ def printpartyfier(party):
 @app.template_filter('winner')
 def winner(text):
     if "y" in text.lower() or "true" in text.lower():
-        return("x-")
+        return("&#100004;")
     else:
         return("")
 
 
+@app.template_filter('printwinner')
+def printwinner(text):
+    if "y" in text.lower() or "true" in text.lower():
+        return("x-")
+    else:
+        return("")
+
+        
 @app.template_filter('runoff')
 def runoff(text):
     if "y" in text.lower() or "true" in text.lower():
