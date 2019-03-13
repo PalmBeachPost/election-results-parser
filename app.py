@@ -120,7 +120,7 @@ def printpartyfier(party):
 @app.template_filter('winner')
 def winner(text):
     if "y" in text.lower() or "true" in text.lower():
-        return("&#10004;")
+        return("&#10004; ")
     else:
         return("")
 
