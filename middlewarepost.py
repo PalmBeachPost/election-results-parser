@@ -32,7 +32,16 @@ with open(cleaningtemp, "r") as f:
 spikedict = OrderedDict()
 cleaning = OrderedDict()
 for row in cleaningtemp:
-    raceid = row['raceid']
+    try:
+        raceid = row['raceid']
+    except KeyError:
+        print("***middlewarepost.py errored out on trying to set row['raceid']")
+        print("***Double-check that you've set your correct Google Sheet ID.")
+        print("***That's in configuration.py.")
+        print("***BUT the error almost certainly is that your Google Sheet is not public.")
+        print("***Open the Sheet, top-right corner Share, hit Get shareable link.")
+        import os
+        os.exit(1)
     candidateid = row['candidateid']
     if raceid not in spikedict:
         spikedict[raceid] = []
