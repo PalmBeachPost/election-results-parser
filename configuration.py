@@ -1,9 +1,8 @@
 # Path to web server folder, for processing by postbake.py
-webpath = "/var/www/html/elex20190312"
+webpath = "/var/www/html/elex20190326"
 
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
-cleaningsheet = "14tgfhdEasqjojj8_sbV9h5CqPP8lsShQRE-K2bvV0eo"
-
+cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
 
 # For papers, you're looking for the reportingunitids to drive the show.
 papers = {
