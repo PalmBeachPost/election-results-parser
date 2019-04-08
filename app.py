@@ -370,6 +370,34 @@ def onerace(paper, slugifiedracename):
                 )
 
 
+@app.route('/<paper>/races-detailed/<slugifiedracename>.html')
+def onerace(paper, slugifiedracename):
+    template = 'race.html'
+    global masterdict
+    global racedict
+    global paperdict
+    oneracedict = OrderedDict()
+    for raceid in paperdict[paper]:
+        groupname = racedict[raceid]['officename']
+        seatname = racedict[raceid]['seatname']
+        seatnum = racedict[raceid]['seatnum']
+        racename = groupname
+        if len(seatname + seatnum) > 0:   # if we have those details:
+            if len(seatname) > 0:   # prefer seatname to seatnum
+                racename += " " + seatname
+            else:
+                racename += " " + seatnum
+        localslug = slugify(racename)
+        if localslug == slugifiedracename:
+            oneracedict = racedict[raceid]
+            return render_template(
+                template,
+                oneracedict=oneracedict,
+                papername=paper,
+                racename=racename
+                )
+
+
 @freezer.register_generator
 def getpapernames():
     global paperdict
