@@ -371,8 +371,8 @@ def onerace(paper, slugifiedracename):
 
 
 @app.route('/<paper>/races-detailed/<slugifiedracename>.html')
-def onerace(paper, slugifiedracename):
-    template = 'race.html'
+def oneracedetailed(paper, slugifiedracename):
+    template = 'racedetailed.html'
     global masterdict
     global racedict
     global paperdict
@@ -425,6 +425,7 @@ def getpapernames():
                 racenames.append(racename)
                 slugifiedracename = slugify(racename)
                 yield "/" + paper + "/races/" + slugifiedracename + ".html"
+                yield "/" + paper + "/races-detailed/" + slugifiedracename + ".html"
 
 
 if __name__ == '__main__':

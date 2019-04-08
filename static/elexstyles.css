@@ -22,6 +22,21 @@ table.main     tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+table.detailed {
+/*    width: 100%;  */
+    margin-top: 1em;
+    margin-left: 1em;
+}
+
+table.detailed     tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+
+.lilindent {
+    padding-left: 1em;
+}
 
 h1, h2, h3, h4, h5, .name, .progress, .county {
     text-align: left;

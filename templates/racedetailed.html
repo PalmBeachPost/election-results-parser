@@ -1,0 +1,42 @@
+<html><head>
+<title>Election results for {{racename}} for {{ papername }}</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet"> 
+<link href="{{url_for('static', filename='elexstyles.css')}}" rel="stylesheet">
+</head>
+<body is="responsive-body">
+
+<h3>{{ racename }}</h3>
+<table class="main" id="{{ racename|slugifier }}">
+    <tr><th class="name"></th><th class="votes">Votes</th><th class="pct">Percent</th><th class="progress">&nbsp;</th></tr>
+{%- for candidateid in oneracedict['candidateid']  -%}
+    {%- set pol = oneracedict['candidateid'][candidateid] -%}
+    <tr>
+        <td class="name">{{ pol['winner']|winner|safe }}{{ pol['runoff']|runoff }}{% if pol['first']|length > 0%}{{ pol['first'] }} {% endif %}{{ pol['last'] }}{{ pol['party']|partyfier}}{{ pol['incumbent']|incumbencyer }}</td>
+        <td class="votes">{{ pol['votecount']|int|comma }}</td>
+        <td class="pct">{{ pol['votepct']|percentageifier }}%</td>
+        <td class="progress">&nbsp;<progress value="{{ pol['votepct']|hunnertifier }}" max="100"></progress>
+    </tr>
+{% endfor %}
+</table>
+<div class="tdnote">&nbsp;{{ oneracedict['precinctsreporting']|int|comma }} ({{ oneracedict['precinctsreportingpct']|percentageifier }}%) of {{ oneracedict['precinctstotal']|int|comma }} precincts reporting at {{ oneracedict['lastupdated']|timestampifier }}</div>
+
+Key: * Incumbent, &#10004; Winner, r- Runoff<br clear>
+<table class="detailed">
+{% for reportingunitid in oneracedict['reportingunitid'] %}
+     <tr><td colspan=1><h4>{{ oneracedict['reportingunitid'][reportingunitid]['reportingunitname'] }}</td><th class="votes">Votes</th></tr>
+     {%- for candidateid in oneracedict['candidateid']  -%}
+         {%- set pol = oneracedict['candidateid'][candidateid] -%}
+         <tr>
+             <td class="name lilindent">{% if pol['first']|length > 0%}{{ pol['first'] }} {% endif %}{{ pol['last'] }}</td>
+             <td class="votes">{{ oneracedict['reportingunitid'][reportingunitid][candidateid]|int|comma }}</td>
+         </tr>
+     {% endfor %}
+{% endfor %}
+</table>
+
+
+<script src="{{url_for('static', filename='responsive-child.js')}}" type="text/javascript"></script>
+
+
+</body>
+</html>           
