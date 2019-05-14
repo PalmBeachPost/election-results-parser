@@ -1,16 +1,18 @@
 # Path to web server folder, for processing by postbake.py
-webpath = "/var/www/html/elex20190326"
+webpath = "/var/www/html/elex20190521test/2015"
 
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
-cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
+# cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
+cleaningsheet = "1p-NGV5SeYg0D5mNXDLZfHo6WOr2j6cf7dTv0bNUbof4"
 
 # For papers, you're looking for the reportingunitids to drive the show.
 papers = {
-    "palmbeachpost": ["Palm Beach", "12099", "Martin", "12085", "St. Lucie", "12111"]
-    # ,
+    "beaver": ["All"]
+    # "palmbeachpost": ["Palm Beach", "12099", "Martin", "12085", "St. Lucie", "12111"],
     # "jacksonville": ["Duval", "12031", "Clay", "12019", "St. Johns", "12109", "Nassau", "12089", "Baker", "12003"],
     # "ocala": ["Alachua", "12001", "Marion", "12083", "Levy", "12075", "Bradford", "12007", "Putnam", "12107", "Citrus", "12017"],
-    # "apalachiola": ["Franklin", "12037"],
+#     "apalachiola": ["Franklin", "12037"]
+# ,
     # "nwf": ["Santa Rosa", "12113", "Okaloosa", "12091", "Walton", "12131"],
     # "staugustine": ["St. Johns", "12109"],
     # "daytonabeach": ["Volusia", "12127", "Flagler", "12035"],

@@ -7,9 +7,9 @@ from multiprocessing import Pool
 scraperdir = "../florida-election-results"
 parserdir = "../election-results-parser"
 
-# parallelprocesses = ("Florida.py", "PalmBeach.py", "Miami-Dade.py")
+# parallelprocesses = ["Florida.py", "PalmBeach.py", "Miami-Dade.py"]
 
-parallelprocesses = ("PalmBeach.py", "donothing.py")
+parallelprocesses = ["FL-Beaver.py"]
 
 sequentialprocesses = ["composite_csvs.py", "middlewarepre.py", "middlewarepost.py", "app.py fml"]
 
@@ -22,7 +22,7 @@ def timestamp():
 if __name__ ==  '__main__':
     print(f"Beginning run at {timestamp()}.")
     pool = Pool(processes=8)
-    pool.map(run_process, parallelprocesses)
+    pool.map(run_process, tuple(parallelprocesses))
     pool.close()
     os.chdir("../election-results-parser")
     for script in sequentialprocesses:
