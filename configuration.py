@@ -1,3 +1,6 @@
+# Do you want detailed results by county or other subunits to be generated?
+WantDetailed = False
+
 # Path to web server folder, for processing by postbake.py
 webpath = "/var/www/html/elex20190521test/2015"
 

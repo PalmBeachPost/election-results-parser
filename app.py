@@ -24,6 +24,7 @@ datadir = configuration.datadir
 resultscomposite = configuration.resultscomposite
 cleaningdone = configuration.cleaningdone
 papers = configuration.papers
+WantDetailed = configuration.WantDetailed
 getcontext().prec = 10      # Precision
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -425,7 +426,8 @@ def getpapernames():
                 racenames.append(racename)
                 slugifiedracename = slugify(racename)
                 yield "/" + paper + "/races/" + slugifiedracename + ".html"
-                yield "/" + paper + "/races-detailed/" + slugifiedracename + ".html"
+                if WantDetailed:
+                    yield "/" + paper + "/races-detailed/" + slugifiedracename + ".html"
 
 
 if __name__ == '__main__':
