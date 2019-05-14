@@ -246,7 +246,7 @@ papergroupdict = OrderedDict()
 for paper in papers:
     paperdict[paper] = []
     for reportingunitid in reportingdict:
-        if reportingunitid in papers[paper]:
+        if reportingunitid in papers[paper] or "All" in papers[paper]:
             for raceid in reportingdict[reportingunitid]:
                 if raceid not in paperdict[paper]:
                     paperdict[paper].append(raceid)
