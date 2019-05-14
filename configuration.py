@@ -2,7 +2,7 @@
 WantDetailed = False
 
 # Path to web server folder, for processing by postbake.py
-webpath = "/var/www/html/elex20190521test/2015"
+webpath = "/var/www/html/elex20190521"
 
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
 # cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
