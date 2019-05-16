@@ -23,7 +23,10 @@ sheetpull = [
     "runoff", "winner", "spikerace", "spikepol", "raceid", "candidateid"
     ]
 
-timestamp = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d-%H%M%S")
+timestamp = datetime.datetime.strftime(datetime.datetime.now(), 
+"%Y%m%d-%H%M%S")
+
+lastupdated = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%dT%H:%M:%S")
 
 # Sample sheet:
 # https://docs.google.com/spreadsheets/d/1X8gn-hp9qCNYNJuzCEi4E6d-kT9XvXmIWiwMdN7lA00/edit?usp=sharing
@@ -74,6 +77,8 @@ stub = OrderedDict([
     ('uncontested', ''), ('votecount', 0), ('votepct', 0), ('winner', '')
     ])
 
+stub['lastupdated'] = lastupdated
+
 placeholderlist = []
 for raceid in cleaning:
     keyrow = cleaning[raceid][next(iter(cleaning[raceid]))]  # Take the first line for clean racename, spikerace, etc.
@@ -95,7 +100,7 @@ with open(cleaningdone, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(list(masterlist[0].keys()))     # Write out header row in same Elex format
     for row in placeholderlist:
-        writer.writerow(list(row.values())
+        writer.writerow(list(row.values()))
     for row in masterlist:
         raceid = row["raceid"]
         candidateid = row["candidateid"]
