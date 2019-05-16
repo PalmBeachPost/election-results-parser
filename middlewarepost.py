@@ -7,6 +7,7 @@ from collections import OrderedDict
 import datetime
 import os
 import shutil
+from copy import deepcopy
 
 cleaningsheet = configuration.cleaningsheet
 cleaningtemp = configuration.cleaningtemp
@@ -54,8 +55,31 @@ for row in cleaningtemp:
     if candidateid not in cleaning[raceid]:
         cleaning[raceid][candidateid] = row
 
+# stub = OrderedDict([
+    # ('id', ''), ('raceid', ''), ('racetype', ''), ('racetypeid', ''), ('ballotorder', ''), ('candidateid', ''),
+    # ('description', ''), ('delegatecount', ''), ('electiondate', ''), ('electtotal', 0), ('electwon', ''),
+    # ('fipscode', ''), ('first', ''), ('incumbent', ''), ('initialization_data', ''),
+    # ('is_ballot_measure', ''), ('last', ''), ('lastupdated', ''), ('level', ''), ('national', ''),
+    # ('officeid', ''), ('officename', ''), ('party', ''), ('polid', ''), ('polnum', ''),
+    # ('precinctsreporting', 0), ('precinctsreportingpct', 0), ('precinctstotal', 0),
+    # ('reportingunitid', 'PLACEHOLDER'), ('reportingunitname', 'PLACEHOLDER'), ('runoff', ''),
+    # ('seatname', ''), ('seatnum', ''), ('statename', ''), ('statepostal', ''), ('test', ''),
+    # ('uncontested', ''), ('votecount', 0), ('votepct', 0), ('winner', '')
+    # ])
+
+# placeholderlist = []
+# for raceid in cleaning:
+    # for candidateid in cleaning[raceid]:  ### NO! Can't iterate like this. See below.
+        # if "ALL" not in spikedict[raceid] and candidateid not in spikedict[raceid]:
+            # cleanrow = cleaning[raceid][candidateid]
+            # line = deepcopy(stub)
+            
+            
+
+
 with open(resultscomposite, "r") as f:
     masterlist = list(csv.DictReader(f))
+
 
 localmatches = ["first", "last", "party", "incumbent", "runoff", "winner"]
 racematches = ["officename", "seatname", "seatnum"]
