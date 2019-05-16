@@ -16,6 +16,17 @@ resultscomposite = configuration.resultscomposite
 snapshotsdir = configuration.snapshotsdir
 datadir = configuration.datadir
 
+localmatches = ["first", "last", "party", "incumbent", "runoff", "winner"]
+racematches = ["officename", "seatname", "seatnum"]
+sheetpull = [
+    "first", "last", "party", "incumbent",
+    "runoff", "winner", "spikerace", "spikepol", "raceid", "candidateid"
+    ]
+
+
+
+
+
 timestamp = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d-%H%M%S")
 
 # Sample sheet:
@@ -55,34 +66,37 @@ for row in cleaningtemp:
     if candidateid not in cleaning[raceid]:
         cleaning[raceid][candidateid] = row
 
-# stub = OrderedDict([
-    # ('id', ''), ('raceid', ''), ('racetype', ''), ('racetypeid', ''), ('ballotorder', ''), ('candidateid', ''),
-    # ('description', ''), ('delegatecount', ''), ('electiondate', ''), ('electtotal', 0), ('electwon', ''),
-    # ('fipscode', ''), ('first', ''), ('incumbent', ''), ('initialization_data', ''),
-    # ('is_ballot_measure', ''), ('last', ''), ('lastupdated', ''), ('level', ''), ('national', ''),
-    # ('officeid', ''), ('officename', ''), ('party', ''), ('polid', ''), ('polnum', ''),
-    # ('precinctsreporting', 0), ('precinctsreportingpct', 0), ('precinctstotal', 0),
-    # ('reportingunitid', 'PLACEHOLDER'), ('reportingunitname', 'PLACEHOLDER'), ('runoff', ''),
-    # ('seatname', ''), ('seatnum', ''), ('statename', ''), ('statepostal', ''), ('test', ''),
-    # ('uncontested', ''), ('votecount', 0), ('votepct', 0), ('winner', '')
-    # ])
+stub = OrderedDict([
+    ('id', ''), ('raceid', ''), ('racetype', ''), ('racetypeid', ''), ('ballotorder', ''), ('candidateid', ''),
+    ('description', ''), ('delegatecount', ''), ('electiondate', ''), ('electtotal', 0), ('electwon', ''),
+    ('fipscode', ''), ('first', ''), ('incumbent', ''), ('initialization_data', ''),
+    ('is_ballot_measure', ''), ('last', ''), ('lastupdated', ''), ('level', ''), ('national', ''),
+    ('officeid', ''), ('officename', ''), ('party', ''), ('polid', ''), ('polnum', ''),
+    ('precinctsreporting', 0), ('precinctsreportingpct', 0), ('precinctstotal', 0),
+    ('reportingunitid', 'PLACEHOLDER'), ('reportingunitname', 'PLACEHOLDER'), ('runoff', ''),
+    ('seatname', ''), ('seatnum', ''), ('statename', ''), ('statepostal', ''), ('test', ''),
+    ('uncontested', ''), ('votecount', 0), ('votepct', 0), ('winner', '')
+    ])
 
-# placeholderlist = []
-# for raceid in cleaning:
-    # for candidateid in cleaning[raceid]:  ### NO! Can't iterate like this. See below.
-        # if "ALL" not in spikedict[raceid] and candidateid not in spikedict[raceid]:
-            # cleanrow = cleaning[raceid][candidateid]
-            # line = deepcopy(stub)
-            
-            
-
+placeholderlist = []
+for raceid in cleaning:
+    keyrow = cleaning[raceid][next(iter(cleaning[raceid]))]  # Take the first line for clean racename, spikerace, etc.
+    for candidateid in cleaning[raceid]:
+        if "ALL" not in spikedict[raceid] and candidateid not in spikedict[raceid]:  # If we want a candidate
+            cleanrow = cleaning[raceid][candidateid]
+#             print(cleanrow)
+            line = deepcopy(stub)
+            for item in sheetpull:
+                line[item] = cleanrow[item]
+            for item in racematches:
+                line[item] = keyrow[item]
+            placeholderlist.append(line)
+#             print(line)
+# print(placeholderlist)
 
 with open(resultscomposite, "r") as f:
     masterlist = list(csv.DictReader(f))
 
-
-localmatches = ["first", "last", "party", "incumbent", "runoff", "winner"]
-racematches = ["officename", "seatname", "seatnum"]
 
 brokenraces = []
 with open(cleaningdone, "w", newline="") as f:
