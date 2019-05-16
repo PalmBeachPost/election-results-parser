@@ -23,10 +23,6 @@ sheetpull = [
     "runoff", "winner", "spikerace", "spikepol", "raceid", "candidateid"
     ]
 
-
-
-
-
 timestamp = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d-%H%M%S")
 
 # Sample sheet:
@@ -84,24 +80,22 @@ for raceid in cleaning:
     for candidateid in cleaning[raceid]:
         if "ALL" not in spikedict[raceid] and candidateid not in spikedict[raceid]:  # If we want a candidate
             cleanrow = cleaning[raceid][candidateid]
-#             print(cleanrow)
             line = deepcopy(stub)
             for item in sheetpull:
                 line[item] = cleanrow[item]
             for item in racematches:
                 line[item] = keyrow[item]
             placeholderlist.append(line)
-#             print(line)
-# print(placeholderlist)
 
 with open(resultscomposite, "r") as f:
     masterlist = list(csv.DictReader(f))
-
 
 brokenraces = []
 with open(cleaningdone, "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(list(masterlist[0].keys()))     # Write out header row in same Elex format
+    for row in placeholderlist:
+        writer.writerow(list(row.values())
     for row in masterlist:
         raceid = row["raceid"]
         candidateid = row["candidateid"]
