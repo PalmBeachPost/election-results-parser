@@ -23,6 +23,7 @@
 Key: * Incumbent, &#10004; Winner, r- Runoff<br clear>
 <table class="detailed">
 {% for reportingunitid in oneracedict['reportingunitid'] %}
+     {% if reportingunitid != "PLACEHOLDER" %}
      <tr><td colspan=1><h4>{{ oneracedict['reportingunitid'][reportingunitid]['reportingunitname'] }}</td><th class="votes">Votes</th></tr>
      {%- for candidateid in oneracedict['candidateid']  -%}
          {%- set pol = oneracedict['candidateid'][candidateid] -%}
@@ -31,6 +32,7 @@ Key: * Incumbent, &#10004; Winner, r- Runoff<br clear>
              <td class="votes">{{ oneracedict['reportingunitid'][reportingunitid][candidateid]|int|comma }}</td>
          </tr>
      {% endfor %}
+     {% endif %}
 {% endfor %}
 </table>
 

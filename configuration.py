@@ -7,7 +7,7 @@ webpath = "/var/www/html/elex20190521"
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
 # cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
 cleaningsheet = "1p-NGV5SeYg0D5mNXDLZfHo6WOr2j6cf7dTv0bNUbof4"
-
+cleaningsheet = "1-5FsRcCW5Xrnu7qZntmW5cMUrNvx3h60IgXPIe3MM_w"
 # For papers, you're looking for the reportingunitids to drive the show.
 papers = {
     "beaver": ["All"]

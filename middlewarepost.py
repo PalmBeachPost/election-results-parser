@@ -90,6 +90,7 @@ for raceid in cleaning:
                 line[item] = cleanrow[item]
             for item in racematches:
                 line[item] = keyrow[item]
+            line['id'] = f"{line['raceid']}_{line['reportingunitid']}"
             placeholderlist.append(line)
 
 with open(resultscomposite, "r") as f:
