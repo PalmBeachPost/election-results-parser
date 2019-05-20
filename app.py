@@ -434,7 +434,7 @@ if __name__ == '__main__':
     # Fire up the Flask test server
     print("Now we're ready to actually start creating the pages.")
     if (len(sys.argv) > 1) and (sys.argv[1] == "build" or sys.argv[1] == "fml"):
-        app.config.update(FREEZER_RELATIVE_URLS=True, FREEZER_DESTINATION="./built")
+        app.config.update(FREEZER_RELATIVE_URLS=True, FREEZER_DESTINATION="./built", FREEZER_IGNORE_MIMETYPE_WARNINGS=True)
         try:
             freezer.freeze()
         except WindowsError:
