@@ -1,6 +1,9 @@
 # Do you want detailed results by county or other subunits to be generated?
 WantDetailed = False
 
+# Do you want the number of precincts reporting to show in the print report?
+WantPrintPrecincts = False
+
 # Path to web server folder, for processing by postbake.py
 webpath = "/var/www/html/elex20190521"
 

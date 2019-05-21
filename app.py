@@ -25,6 +25,7 @@ resultscomposite = configuration.resultscomposite
 cleaningdone = configuration.cleaningdone
 papers = configuration.papers
 WantDetailed = configuration.WantDetailed
+WantPrintPrecincts = configuration.WantPrintPrecincts
 getcontext().prec = 10      # Precision
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -302,6 +303,8 @@ def maintemplate(paper):
 def printtemplate(paper):
     print("Trying to generate for " + paper)
     template = 'print.txt'
+    if not WantPrintPrecincts:
+        template = "print-noprecincts.txt"
     global masterdict
     hardcodingisbad = ["260540", "260550", "260830", "260840", "551919"]
     printpaperdict = OrderedDict()
