@@ -86,12 +86,13 @@ for raceid in cleaning:
         if "ALL" not in spikedict[raceid] and candidateid not in spikedict[raceid]:  # If we want a candidate
             cleanrow = cleaning[raceid][candidateid]
             line = deepcopy(stub)
-            for item in sheetpull:
-                line[item] = cleanrow[item]
-            for item in racematches:
-                line[item] = keyrow[item]
-            line['id'] = f"{line['raceid']}_{line['reportingunitid']}"
-            placeholderlist.append(line)
+            if len(cleanrow['officename'].strip()) != 0:
+                for item in sheetpull:
+                    line[item] = cleanrow[item]
+                for item in racematches:
+                    line[item] = keyrow[item]
+                line['id'] = f"{line['raceid']}_{line['reportingunitid']}"
+                placeholderlist.append(line)
 
 with open(resultscomposite, "r") as f:
     masterlist = list(csv.DictReader(f))
