@@ -5,15 +5,18 @@ WantDetailed = False
 WantPrintPrecincts = False
 
 # Path to web server folder, for processing by postbake.py
-webpath = "/var/www/html/elex20190521"
+webpath = "/var/www/html/elex20191105"
 
 # Google Sheets ID for processed "preclean" file. MUST BE SET BE SHARED WITH ANYONE WHO HAS THE LINK.
 # cleaningsheet = "1HSdmS56RdVjHv_J1Q3pHyWllHsMYDaOMDDW8fk_CnRc"
-cleaningsheet = "1p-NGV5SeYg0D5mNXDLZfHo6WOr2j6cf7dTv0bNUbof4"
-cleaningsheet = "1-5FsRcCW5Xrnu7qZntmW5cMUrNvx3h60IgXPIe3MM_w"
+# cleaningsheet = "1p-NGV5SeYg0D5mNXDLZfHo6WOr2j6cf7dTv0bNUbof4"
+# cleaningsheet = "1-5FsRcCW5Xrnu7qZntmW5cMUrNvx3h60IgXPIe3MM_w"
+cleaningsheet = "1qtbKCmjf_VMN0vKUBvYHdBitFpsiMOdQTnqxF-Lq9Oc"
+
 # For papers, you're looking for the reportingunitids to drive the show.
 papers = {
-    "beaver": ["All"]
+    "columbus": ["OH-Franklin"]
+    # "beaver": ["All"]
     # "palmbeachpost": ["Palm Beach", "12099", "Martin", "12085", "St. Lucie", "12111"],
     # "jacksonville": ["Duval", "12031", "Clay", "12019", "St. Johns", "12109", "Nassau", "12089", "Baker", "12003"],
     # "ocala": ["Alachua", "12001", "Marion", "12083", "Levy", "12075", "Bradford", "12007", "Putnam", "12107", "Citrus", "12017"],
