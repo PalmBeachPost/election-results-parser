@@ -91,6 +91,10 @@ def partyfier(party):
         thingy = prefix + "Green" + suffix
     elif "no party" in party.lower() or "npa" in party.lower():
         thingy = ""
+    elif party == "R":
+        thingy = prefix + "R" + suffix
+    elif party == "D":
+        thingy = prefix + "D" + suffix
     else:
         thingy = ""
     return(thingy)
