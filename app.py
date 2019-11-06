@@ -340,6 +340,8 @@ def racegroup(paper, slugifiedgroupname):
         groupname = racedict[raceid]['officename']
         localslug = slugify(groupname)
         if localslug == slugifiedgroupname:
+            if len(slugifiedgroupname) == 0:
+                print(f"groupname problem for {raceid}")	
             localdict = OrderedDict()
             localdict[groupname] = masterdict[paper][groupname]
             # print(localdict)
@@ -426,13 +428,19 @@ def getpapernames():
                 else:
                     racename += " " + seatnum
             if groupname not in groupnames:
-                groupnames.append(groupname)
-                slugifiedgroupname = slugify(groupname)
-                yield "/" + paper + "/racegroups/" + slugifiedgroupname + ".html"
+                if len(groupname) == 0:
+                    print(f"Error on groupname involving {raceid}")
+                else:
+                    groupnames.append(groupname)
+                    slugifiedgroupname = slugify(groupname)
+                    yield "/" + paper + "/racegroups/" + slugifiedgroupname + ".html"
             if racename not in racenames:
-                racenames.append(racename)
-                slugifiedracename = slugify(racename)
-                yield "/" + paper + "/races/" + slugifiedracename + ".html"
+                if len(racename) == 0:
+                    print(f"Error on races involving {raceid}")
+                else:
+                    racenames.append(racename)
+                    slugifiedracename = slugify(racename)
+                    yield "/" + paper + "/races/" + slugifiedracename + ".html"
                 if WantDetailed:
                     yield "/" + paper + "/races-detailed/" + slugifiedracename + ".html"
 
